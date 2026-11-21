@@ -53,3 +53,15 @@ Get Started opens MEL-U-003 onboarding, Login opens MEL-U-005, and Create an acc
 Preview: http://localhost:3001/customer/screens/MEL-U-002
 
 Verification: `MELO_WELCOME_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork loading and viewport fit, confirms the standalone layout and account-link destinations, and activates Get Started to verify navigation into onboarding.
+
+## MEL-U-003 onboarding
+
+The onboarding screen follows the supplied three-card layout: Discover Experiences, Book Private Rooms, and Celebrate Together. Desktop displays the introductory headline beside all three rounded cards. Mobile displays one image/card at a time, with progress dots, Skip, and a full-width Next button. The page uses the reference's light pink background, heart/script branding, outlined card icons, and curved pink/lavender footer.
+
+Next advances through the three steps; the final action is Get Started. Skip and completion both open MEL-U-004 Role Selection. Dots, left/right arrow keys, and horizontal touch swipes can change the active step. Progress is announced to assistive technology, and inactive mobile cards are hidden. There is no automatic carousel playback.
+
+Two high-resolution illustrations were made with the built-in image-generation tool and saved as `assets/melo/onboarding-discover.png` and `assets/melo/onboarding-celebrate.png`. These recreate the workshop and friends imagery from the reference; the middle card reuses `celebration-hd.png`. Exact final prompts are saved in `assets/melo/onboarding-artwork-prompts.json`.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-003
+
+Verification: `MELO_ONBOARD_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork and viewport fit, three desktop cards versus one mobile card, progress/Next controls, keyboard navigation, touch swipes, Skip destination, and completion to Role Selection. Both visual captures were reviewed against the source mockup.

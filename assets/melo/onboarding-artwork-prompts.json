@@ -1,0 +1,15 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "name": "discover",
+      "path": "assets/melo/onboarding-discover.png",
+      "prompt": "Create a sharp photorealistic premium website onboarding card image, landscape 1536x1024. An adult Indian woman aged 25 to 30 with dark wavy hair, wearing a blush pink apron over a cream blouse, smiling naturally while painting a small colorful canvas at a wooden tabletop easel. Two adult female friends also painting in the softly lit background. Stylish feminine creative workshop studio, blush pink walls and flowers, warm natural window light with a few subtle golden fairy lights. Focus is the woman and her brush on the canvas, realistic hands, joyful hands-on experience. Elegant pink-purple Melo Space palette. Centered composition that can crop into a square card or tall rounded mobile image. NO WORDS, NO TEXT, NO LOGOS, NO UI, NO WATERMARK."
+    },
+    {
+      "name": "celebrate",
+      "path": "assets/melo/onboarding-celebrate.png",
+      "prompt": "Create a sharp photorealistic premium website onboarding card image, landscape 1536x1024. Three adult women friends, ages 25 to 35, diverse skin tones including Indian women, standing close together laughing and celebrating in a beautiful blush-pink party studio, wearing stylish pink, ivory and lavender celebration dresses. Warm genuine candid expressions, tasteful natural makeup, flowers and warm golden fairy lights, subtle pink balloons in the softly lit background. Welcoming elegant feminine joyful mood, pink-purple Melo Space palette. Close medium group portrait, centered composition with all three adult faces visible, can crop to square or tall rounded card. NO WORDS, NO TEXT, NO LOGOS, NO UI, NO WATERMARK."
+    }
+  ]
+}

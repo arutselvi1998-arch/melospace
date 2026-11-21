@@ -12,14 +12,34 @@ try{
  const send=(method,params={})=>new Promise((ok,no)=>{const key=++id;calls.set(key,{ok,no});socket.send(JSON.stringify({id:key,method,params}));});
  const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.text);return r.result.value;};
  await send('Page.enable');await send('Runtime.enable');await mkdir('test-artifacts',{recursive:true});
- for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-'))){
+ for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844],['onboarding-desktop','/customer/screens/MEL-U-003',1440,900],['onboarding-mobile','/customer/screens/MEL-U-003',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-')).filter(c=>!process.env.MELO_ONBOARD_ONLY||c[0].startsWith('onboarding-'))){
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});await send('Page.navigate',{url:base+path});
   for(let i=0;i<100;i++){if(await evaluate(`location.pathname===${JSON.stringify(path.split('?')[0])}&&!!document.querySelector('#main')`))break;await pause(50);}
-  await evaluate(`(async()=>{const deadline=ms=>new Promise(r=>setTimeout(r,ms));await Promise.race([document.fonts.ready,deadline(3000)]);await Promise.race([Promise.all([...document.images].filter(i=>i.getBoundingClientRect().top<innerHeight).map(i=>i.decode().catch(()=>{}))),deadline(6000)]);const hero=new Image();hero.src='/assets/melo/celebration-hero.png';await Promise.race([hero.decode(),deadline(5000)]);})()`);
+  await evaluate(`(async()=>{const deadline=ms=>new Promise(r=>setTimeout(r,ms));await Promise.race([document.fonts.ready,deadline(3000)]);await Promise.race([Promise.all([...document.images].filter(i=>i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight).map(i=>i.decode().catch(()=>{}))),deadline(6000)]);const hero=new Image();hero.src='/assets/melo/celebration-hero.png';await Promise.race([hero.decode(),deadline(5000)]);})()`);
   assert.ok(await evaluate('document.documentElement.scrollWidth<=innerWidth+1'),name+' must fit viewport');
-  const broken=await evaluate(`[...document.images].filter(i=>i.getBoundingClientRect().top<innerHeight&&!i.naturalWidth).map(i=>i.src)`);assert.deepEqual(broken,[],name+' visible images load');
+  const broken=await evaluate(`[...document.images].filter(i=>i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight&&!i.naturalWidth).map(i=>i.src)`);assert.deepEqual(broken,[],name+' visible images load');
+  if(process.env.MELO_ONBOARD_ONLY)assert.equal(await evaluate("[...document.querySelectorAll('[data-onboard-card]')].filter(c=>!c.hidden).length"),width<641?1:3,'Correct visible card count');
   if(process.env.MELO_ARTWORK_ONLY){const insufficient=await evaluate(`[...document.images].filter(i=>i.src.includes('/assets/melo/')&&i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight&&i.naturalWidth<i.getBoundingClientRect().width*2).map(i=>({src:i.src,pixels:i.naturalWidth,display:i.getBoundingClientRect().width}))`);assert.deepEqual(insufficient,[],name+' artwork has enough pixels for 2x-density cards');}
   const image=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(`test-artifacts/${name}.png`,Buffer.from(image.data,'base64'));console.log(name+' captured; visible artwork loaded; no horizontal overflow');
+ }
+ if(process.env.MELO_ONBOARD_ONLY){
+  assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Onboarding is standalone');
+  assert.ok(await evaluate("document.querySelector('.onboard-skip').href.endsWith('MEL-U-004')"),'Skip opens role selection');
+  await evaluate("document.querySelector('[data-onboard-next]').click()");
+  assert.equal(await evaluate("document.querySelector('[data-onboarding]').dataset.step"),'1');
+  assert.ok(await evaluate("document.querySelector('[data-onboard-dot=\"1\"]').getAttribute('aria-pressed')==='true'"));
+  await evaluate("document.querySelector('[data-onboard-next]').focus()");
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowLeft',code:'ArrowLeft'});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowLeft',code:'ArrowLeft'});
+  assert.equal(await evaluate("document.querySelector('[data-onboarding]').dataset.step"),'0','Keyboard goes back');
+  await evaluate("(()=>{const s=document.querySelector('.onboard-cards');s.dispatchEvent(new PointerEvent('pointerdown',{pointerType:'touch',clientX:220,clientY:200}));s.dispatchEvent(new PointerEvent('pointerup',{pointerType:'touch',clientX:110,clientY:210}));})()");
+  assert.equal(await evaluate("document.querySelector('[data-onboarding]').dataset.step"),'1','Swipe advances');
+  await evaluate("document.querySelector('[data-onboard-dot=\"2\"]').click()");
+  assert.equal(await evaluate("document.querySelector('[data-onboard-next]').textContent"),'Get Started');
+  await evaluate("document.querySelector('[data-onboard-next]').click()");
+  let finished=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-004')&&!!document.querySelector('#main')")){finished=true;break;}await pause(50);}
+  assert.ok(finished,'Last slide continues to role selection');
+  console.log('Onboarding responsive card counts, Next/dots, keyboard, swipe, Skip destination, and completion navigation passed.');
  }
  if(process.env.MELO_WELCOME_ONLY){
   assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Welcome has its own layout');
