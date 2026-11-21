@@ -8,6 +8,7 @@ assets.set('/ds6.css', ['ds6.css', 'text/css']);
 assets.set('/document-design.css', ['document-design.css', 'text/css']);
 assets.set('/ds6-design.js', ['ds6-design.js', 'text/javascript']);
 assets.set('/ds6-splash.js', ['ds6-splash.js', 'text/javascript']);
+assets.set('/ds6-welcome.js', ['ds6-welcome.js', 'text/javascript']);
 for (const name of ['workshop','craft','dress','celebration','room','photo','meetup','wellness','crochet','party','room-wide','login-art','celebration-hero']) assets.set('/assets/melo/'+name+'.png', ['assets/melo/'+name+'.png', 'image/png']);
 // Keep existing page URLs stable while replacing low-resolution document crops.
 for (const name of ['workshop','craft','dress','celebration','room','photo','meetup','wellness','crochet']) {

@@ -43,3 +43,13 @@ The splash is a standalone full-screen composition: neon heart/M and cursive wor
 Preview: http://localhost:3001/customer/screens/MEL-U-001?preview=1
 
 Verification: `MELO_SPLASH_ONLY=1` with `tests/design-capture.mjs` captures desktop and mobile, checks image loading and viewport fit, verifies the standalone layout and entry link, and confirms automatic navigation to the welcome screen.
+
+## MEL-U-002 welcome / get started
+
+The welcome screen follows its separate reference layout. Desktop uses a light pink header and background, welcome headline, room-and-community collage, Get Started/Login actions, account link, and five feature shortcuts. Mobile uses a purple branded welcome panel, large room artwork, a curved transition into the light action area, and stacked full-width Get Started and Login buttons. It does not use the shared authentication split-panel layout.
+
+Get Started opens MEL-U-003 onboarding, Login opens MEL-U-005, and Create an account opens MEL-U-007. All imagery reuses the high-resolution Melo artwork. No new live authentication behavior is implied.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-002
+
+Verification: `MELO_WELCOME_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork loading and viewport fit, confirms the standalone layout and account-link destinations, and activates Get Started to verify navigation into onboarding.
