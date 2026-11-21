@@ -16,3 +16,32 @@ body{background:#fff3fd;color:#2a103a}button,.button{background:var(--melo-gradi
 @media(max-width:640px){.taxonomy-layout{grid-template-columns:1fr}.taxonomy-categories{display:flex;overflow:auto;gap:8px;align-items:center}.taxonomy-categories h2{display:none}.taxonomy-category{min-width:155px;border:1px solid #edd1ef;padding:8px}.taxonomy-main{padding:16px!important}.taxonomy-main .section-head{flex-wrap:wrap}}
 @media(max-width:640px){.document-design .melo-hero{background-image:linear-gradient(90deg,#280032d9 0%,#28003280 58%,#28003210 100%),url('/assets/melo/celebration-hero.png')}.melo-hero .hero-copy p{text-shadow:0 1px 5px #280032}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* MEL-U-001: dedicated splash composition, matching the document's mobile/web mockup. */
+body[data-portal="user"][data-screen="1"]{background:#340050}
+.melo-splash{position:relative;isolation:isolate;width:100%;max-width:none;min-height:100vh;min-height:100svh;margin:0;padding:0;overflow:hidden;color:#fff;background:radial-gradient(ellipse at 21% 53%,#a716a4 0%,transparent 42%),linear-gradient(125deg,#190031 3%,#59057b 47%,#c425bc 100%)}
+.melo-splash:before{content:'';position:absolute;inset:-28% -20% 30% -10%;border-radius:0 0 50% 50%;background:linear-gradient(155deg,#31004c00 40%,#ef21c12e 70%,#ff5ed5a1 100%);transform:rotate(-13deg);z-index:-1}
+.splash-skip{position:absolute;right:26px;top:22px;padding:8px 17px;border:1px solid #f6b3ef66;border-radius:24px;font-size:12px;color:#ffebfb;background:#42004c44;z-index:5}
+.splash-skip:hover{background:#aa148777}.splash-skip:focus-visible{outline:3px solid white;outline-offset:4px}
+.splash-brand{position:absolute;left:9%;top:22%;width:48%;text-align:center;z-index:3}
+.splash-brand h1{margin:0;max-width:none;font-weight:400;line-height:1.1;letter-spacing:0}
+.splash-brand .melo-wordmark{flex-direction:column;gap:17px;filter:drop-shadow(0 0 8px #ff5ac5)}
+.splash-brand .melo-heart{width:130px;height:116px;color:#fff;filter:drop-shadow(0 0 4px #ffb2e4) drop-shadow(0 0 12px #ff009d) drop-shadow(0 0 22px #ff008c)}
+.splash-brand .melo-heart path{stroke-width:1.9}
+.splash-brand .melo-wordmark>span{font:700 clamp(52px,5.6vw,84px)/1.2 'Dancing Script','Segoe Script',cursive;color:#fff}
+.splash-brand .melo-wordmark sup{font:500 .48em 'Poppins',sans-serif;vertical-align:top;position:relative;top:.15em;margin-left:5px}
+.splash-tagline{font-size:14px;line-height:1.8;color:#ffe6fc;letter-spacing:1.4px;margin:20px 0 0;text-shadow:0 1px 9px #350046}
+.splash-tagline span{font-size:12px;letter-spacing:2px}
+.splash-set{position:absolute;inset:0 0 15% 37%;z-index:0;mask-image:linear-gradient(90deg,transparent,#000 33%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 33%)}
+.splash-room{width:100%;height:100%;object-fit:cover;object-position:77% center;opacity:.9}
+.splash-dress-frame{position:absolute;right:6%;top:17%;width:26%;height:53%;max-width:245px;border:3px solid #e9b667;border-radius:130px 130px 13px 13px;overflow:hidden;box-shadow:0 0 7px #ffedb8,0 0 30px #fbb16699}
+.splash-dress-frame img{width:100%;height:100%;object-fit:cover;object-position:center}
+.splash-glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(30px);z-index:1}.splash-glow-one{width:250px;height:140px;left:23%;top:40%;background:#fd009b55}.splash-glow-two{width:180px;height:200px;right:5%;top:17%;background:#ffe6ac1a}
+.splash-waves{position:absolute;left:0;bottom:0;width:100%;height:42%;z-index:2;filter:drop-shadow(0 -5px 14px #ff92d766)}
+.splash-loading{position:absolute;bottom:6.5%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:13px;white-space:nowrap;z-index:4;color:#64116e;font-size:12px;letter-spacing:.3px}
+.splash-spinner{display:block;width:27px;height:27px;border:3px solid #d78de65c;border-right-color:#df1fbb;border-top-color:#ba37cf;border-radius:50%;animation:melo-splash-spin 1s linear infinite}
+.splash-sparkles{position:absolute;inset:0;pointer-events:none;z-index:2}.splash-sparkles span{position:absolute;color:#ffd8f7;text-shadow:0 0 7px #ff2fba,0 0 15px #ff8bd0;font-size:21px}.splash-sparkles span:nth-child(1){left:14%;top:18%}.splash-sparkles span:nth-child(2){left:47%;top:43%;font-size:28px}.splash-sparkles span:nth-child(3){left:62%;top:12%;font-size:14px}.splash-sparkles span:nth-child(4){left:7%;top:60%;font-size:14px}.splash-sparkles span:nth-child(5){right:7%;top:12%;font-size:18px}
+@keyframes melo-splash-spin{to{transform:rotate(360deg)}}
+@media(max-width:640px){.melo-splash{min-height:100svh}.splash-skip{top:17px;right:17px;font-size:10px;padding:7px 12px}.splash-brand{top:17%;left:7%;width:86%}.splash-brand .melo-heart{width:90px;height:82px}.splash-brand .melo-wordmark{gap:13px}.splash-brand .melo-wordmark>span{font-size:55px}.splash-tagline{font-size:10px;letter-spacing:.6px;line-height:1.9;margin-top:13px}.splash-tagline span{font-size:9px;letter-spacing:1.2px}.splash-set{inset:40% -4% 14% -4%;mask-image:linear-gradient(180deg,transparent,#000 24%,#000 86%,transparent);-webkit-mask-image:linear-gradient(180deg,transparent,#000 24%,#000 86%,transparent)}.splash-room{object-position:78% center;opacity:.96}.splash-dress-frame{right:9%;top:15%;width:26%;height:63%;border-width:2px}.splash-waves{height:29%;bottom:-1px}.splash-loading{bottom:5.5%;gap:10px;font-size:10px}.splash-spinner{width:24px;height:24px;border-width:2px}.splash-glow-one{left:28%;top:23%;width:170px;height:160px}.splash-glow-two{top:50%;width:120px;height:160px}.splash-sparkles span:nth-child(1){top:14%;left:12%}.splash-sparkles span:nth-child(2){left:83%;top:32%}.splash-sparkles span:nth-child(3){left:76%;top:12%}.splash-sparkles span:nth-child(4){left:6%;top:47%}}
+@media(max-height:600px) and (min-width:641px){.splash-brand{top:12%}.splash-brand .melo-heart{width:85px;height:76px}.splash-brand .melo-wordmark>span{font-size:56px}.splash-tagline{margin-top:10px;font-size:11px}.splash-loading{bottom:5%;gap:7px}}
+@media(prefers-reduced-motion:reduce){.splash-spinner{animation:none;border-top-color:#ba37cf;border-right-color:#df1fbb}}

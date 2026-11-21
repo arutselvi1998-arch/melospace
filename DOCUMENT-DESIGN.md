@@ -35,3 +35,11 @@ The implemented scope remains 61 named user screens and admin MEL-A-001–013. I
 Verification includes browser rendering of all 74 screens, category editing/discovery linkage, simulated account/age flows, booking/reschedule/cancel, private-room customization, and mobile overflow/menu checks. Separate screenshots wait for fonts, inline images, and hero artwork to decode before capture. Screenshots are in `test-artifacts/`.
 
 Run `node tests/design-capture.mjs` against the local server on port 3001 to capture the homepage, admin dashboard, category list/editor/taxonomy, login, and mobile homepage using installed Edge.
+
+## MEL-U-001 splash screen
+
+The splash is a standalone full-screen composition: neon heart/M and cursive wordmark, deep purple/pink background, high-resolution celebration-room and dress artwork, layered SVG pink curves, and a loading indicator. It excludes the normal navigation and authentication panels. Normal entry advances to MEL-U-002 after the artwork is ready; Enter Melo Space provides immediate navigation. Add `?preview=1` to keep the splash visible for visual review. Reduced-motion preferences stop the spinner animation.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-001?preview=1
+
+Verification: `MELO_SPLASH_ONLY=1` with `tests/design-capture.mjs` captures desktop and mobile, checks image loading and viewport fit, verifies the standalone layout and entry link, and confirms automatic navigation to the welcome screen.

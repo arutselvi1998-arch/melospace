@@ -2,6 +2,8 @@ if (location.pathname.startsWith('/staff')) {
   await import('./app.js');
 } else {
   await import('./ds6-app.js');
+  const {startSplash}=await import('./ds6-splash.js');
+  startSplash();
   // One delegated controller keeps the footer trigger and drawer close control in sync.
   document.addEventListener('click',event=>{
     const trigger=event.target.closest('.ds-menu');
