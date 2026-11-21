@@ -89,3 +89,15 @@ The password-visibility toggle is keyboard accessible. Account recovery uses a n
 Preview: http://localhost:3001/customer/screens/MEL-U-005
 
 Verification: `MELO_LOGIN_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and artwork, password visibility, recovery-dialog focus/Escape, provider feedback, form validation, verification navigation, return context, role preservation, remember preference, and absence of credentials in storage. The updated role-selection checks and full 74-screen/booking browser smoke suite also pass.
+
+## MEL-U-006 OTP verification
+
+The dedicated verification screen follows the reference's illustrated purple room/brand panel, curved light form panel, shield symbol, six code boxes, resend countdown, gradient Verify action, and outlined Change Number action. Mobile uses a light branded header and native SVG envelope illustration above the form. Existing high-resolution celebration artwork is reused.
+
+The six inputs support numeric entry, automatic focus advance, whole-code paste/autofill, left/right arrows, and Backspace into the previous box. Missing digits and incorrect demo codes show accessible errors. The 30-second resend cooldown disables resend until ready, then resets the inputs and cooldown when activated. Resend explicitly reports that no message was sent.
+
+The code is **123456** in this local demo. No real OTP service is connected. Successful verification opens MEL-U-008 age eligibility, or returns to checkout when the booking return context is present. Change Number returns to MEL-U-005 with that context retained; it does not lose the stored role or booking draft. Admin MFA keeps its existing separate demo interface.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-006
+
+Verification: `MELO_OTP_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and images, six-box entry, incomplete/incorrect codes, focus advance, Backspace, paste, resend availability/reset, demo verification, and checkout return context. The countdown is advanced only in the isolated test browser to avoid a real 30-second test wait.
