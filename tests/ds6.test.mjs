@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {registrationErrors,adultBirthDateLimit} from '../ds6-data.js';
 import {userScreens,adminScreens,initialState,categoryErrors,listValues,bookingTotal,makeBooking,bookingErrors} from '../ds6-data.js';
 
 test('DS6 preserves every named screen and stops admin at category management',()=>{
@@ -38,4 +39,25 @@ test('bookings require adult eligibility, future date, valid capacity and visibl
   assert.ok(bookingErrors({...draft,date:'2020-01-01'},state).some(e=>e.includes('future')));
   assert.ok(bookingErrors({...draft,count:9},state).some(e=>e.includes('between')));
   assert.ok(bookingErrors({...draft,experience:'dream',room:'studio',count:5},state).some(e=>e.includes('between')));
+});
+
+test('registration accepts exactly 18, rejects younger or invalid birth dates, and handles leap-day cutoff',()=>{
+  const data={name:'Sample Guest',email:'sample@example.com',mobile:'+12025550147',birthDate:'2008-11-21',password:'Sample987!',confirmPassword:'Sample987!',terms:true,role:'user'};
+  assert.deepEqual(registrationErrors(data,'2026-11-21'),[]);
+  assert.equal(adultBirthDateLimit('2026-11-21'),'2008-11-21');
+  assert.ok(registrationErrors({...data,birthDate:'2008-11-22'},'2026-11-21').some(e=>e.includes('18')));
+  assert.ok(registrationErrors({...data,birthDate:'1995-02-30'},'2026-11-21').some(e=>e.includes('valid sample date')));
+  assert.equal(adultBirthDateLimit('2024-02-29'),'2006-02-28');
+  assert.deepEqual(registrationErrors({...data,birthDate:'2006-02-28'},'2024-02-29'),[]);
+  assert.ok(registrationErrors({...data,birthDate:'2006-03-01'},'2024-02-29').some(e=>e.includes('18')));
+});
+test('registration validates contact fields, sample password confirmation, consent and role',()=>{
+  const data={name:'Sample Host',email:'sample@example.com',mobile:'+12025550147',birthDate:'1995-06-15',password:'Sample987!',confirmPassword:'Sample987!',terms:true,role:'host'};
+  assert.deepEqual(registrationErrors(data,'2026-11-21'),[]);
+  assert.ok(registrationErrors({...data,email:'invalid'},'2026-11-21').some(e=>e.includes('email')));
+  assert.ok(registrationErrors({...data,mobile:'abc123'},'2026-11-21').some(e=>e.includes('mobile')));
+  assert.ok(registrationErrors({...data,password:'123',confirmPassword:'123'},'2026-11-21').some(e=>e.includes('six')));
+  assert.ok(registrationErrors({...data,confirmPassword:'Different'},'2026-11-21').some(e=>e.includes('do not match')));
+  assert.ok(registrationErrors({...data,terms:false},'2026-11-21').some(e=>e.includes('Accept')));
+  assert.ok(registrationErrors({...data,role:'admin'},'2026-11-21').some(e=>e.includes('User or Host')));
 });

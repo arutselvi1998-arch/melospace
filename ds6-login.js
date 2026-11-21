@@ -3,6 +3,8 @@ import {logo,icon} from './ds6-design.js';
 const eye='<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
 const providers=[['Google','<span class="login-google-mark" aria-hidden="true">G</span>'],['Apple','<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 12.5c0-2 1.6-3 1.7-3.1-1-1.5-2.6-1.7-3.1-1.7-1.3-.1-2.5.8-3.2.8-.6 0-1.7-.8-2.8-.8-1.5 0-2.8.9-3.5 2.1-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.5 2.1 2.6 2 1.1 0 1.5-.7 2.8-.7s1.7.7 2.9.7 1.9-1 2.6-2c.8-1.1 1.1-2.2 1.1-2.3-.1 0-2.2-.9-2.2-3.6ZM14.6 6.3c.6-.8 1.1-1.9 1-3-.9 0-2 .7-2.7 1.5-.6.7-1.2 1.9-1 2.9 1 .1 2.1-.5 2.7-1.4Z"/></svg>'],['WhatsApp','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 20 1-4a8 8 0 1 1 3 3Z"/><path d="M8 7c-1 1 0 4 2 6s5 3 6 2l-1-2-2 1-3-3 1-2Z"/></svg>']];
 
+export {providers as accountProviders};
+
 export function loginScreen(screenLink,selectedRole,remember=false){
   const role=selectedRole==='host'?'host':'user';
   const returnTo=new URLSearchParams(location.search).get('returnTo');

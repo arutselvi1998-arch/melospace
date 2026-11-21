@@ -12,7 +12,7 @@ try{
  const send=(method,params={})=>new Promise((ok,no)=>{const key=++id;calls.set(key,{ok,no});socket.send(JSON.stringify({id:key,method,params}));});
  const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.text);return r.result.value;};
  await send('Page.enable');await send('Runtime.enable');await mkdir('test-artifacts',{recursive:true});
- for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844],['onboarding-desktop','/customer/screens/MEL-U-003',1440,900],['onboarding-mobile','/customer/screens/MEL-U-003',390,844],['role-desktop','/customer/screens/MEL-U-004',1440,900],['role-mobile','/customer/screens/MEL-U-004',390,844],['login-mobile','/customer/screens/MEL-U-005',390,844],['otp-desktop','/customer/screens/MEL-U-006',1440,900],['otp-mobile','/customer/screens/MEL-U-006',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-')).filter(c=>!process.env.MELO_ONBOARD_ONLY||c[0].startsWith('onboarding-')).filter(c=>!process.env.MELO_ROLE_ONLY||c[0].startsWith('role-')).filter(c=>!process.env.MELO_LOGIN_ONLY||c[0].startsWith('login-')).filter(c=>!process.env.MELO_OTP_ONLY||c[0].startsWith('otp-'))){
+ for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844],['onboarding-desktop','/customer/screens/MEL-U-003',1440,900],['onboarding-mobile','/customer/screens/MEL-U-003',390,844],['role-desktop','/customer/screens/MEL-U-004',1440,900],['role-mobile','/customer/screens/MEL-U-004',390,844],['login-mobile','/customer/screens/MEL-U-005',390,844],['otp-desktop','/customer/screens/MEL-U-006',1440,900],['otp-mobile','/customer/screens/MEL-U-006',390,844],['register-desktop','/customer/screens/MEL-U-007',1440,900],['register-mobile','/customer/screens/MEL-U-007',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-')).filter(c=>!process.env.MELO_ONBOARD_ONLY||c[0].startsWith('onboarding-')).filter(c=>!process.env.MELO_ROLE_ONLY||c[0].startsWith('role-')).filter(c=>!process.env.MELO_LOGIN_ONLY||c[0].startsWith('login-')).filter(c=>!process.env.MELO_OTP_ONLY||c[0].startsWith('otp-')).filter(c=>!process.env.MELO_REGISTER_ONLY||c[0].startsWith('register-'))){
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});await send('Page.navigate',{url:base+path});
   for(let i=0;i<100;i++){if(await evaluate(`location.pathname===${JSON.stringify(path.split('?')[0])}&&!!document.querySelector('#main')`))break;await pause(50);}
   await evaluate(`(async()=>{const deadline=ms=>new Promise(r=>setTimeout(r,ms));await Promise.race([document.fonts.ready,deadline(3000)]);await Promise.race([Promise.all([...document.images].filter(i=>i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight).map(i=>i.decode().catch(()=>{}))),deadline(6000)]);const hero=new Image();hero.src='/assets/melo/celebration-hero.png';await Promise.race([hero.decode(),deadline(5000)]);})()`);
@@ -21,6 +21,46 @@ try{
   if(process.env.MELO_ONBOARD_ONLY)assert.equal(await evaluate("[...document.querySelectorAll('[data-onboard-card]')].filter(c=>!c.hidden).length"),width<641?1:3,'Correct visible card count');
   if(process.env.MELO_ARTWORK_ONLY){const insufficient=await evaluate(`[...document.images].filter(i=>i.src.includes('/assets/melo/')&&i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight&&i.naturalWidth<i.getBoundingClientRect().width*2).map(i=>({src:i.src,pixels:i.naturalWidth,display:i.getBoundingClientRect().width}))`);assert.deepEqual(insufficient,[],name+' artwork has enough pixels for 2x-density cards');}
   const image=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(`test-artifacts/${name}.png`,Buffer.from(image.data,'base64'));console.log(name+' captured; visible artwork loaded; no horizontal overflow');
+ }
+ if(process.env.MELO_REGISTER_ONLY){
+  const fillRegister=async(values,submit=false)=>evaluate(`(()=>{const f=document.querySelector('.register-form');for(const [key,value] of Object.entries(${JSON.stringify(values)})){const el=f.elements.namedItem(key);if(el.type==='checkbox')el.checked=value;else el.value=String(value);}if(${submit})f.requestSubmit();})()`);
+  assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Registration has its own reference layout');
+  assert.equal(await evaluate("document.querySelectorAll('.register-fields input').length"),6);
+  assert.ok(await evaluate("document.querySelector('.register-login-link a').href.endsWith('MEL-U-005')"),'Login destination');
+  assert.ok(await evaluate("document.querySelector('.register-terms a').href.includes('MEL-U-065')&&document.querySelector('.register-terms a').target==='_blank'"),'Policy links preserve the form in another tab');
+  await evaluate("document.querySelector('.register-form').requestSubmit()");
+  assert.equal(await evaluate("document.querySelector('.form-error').hidden"),false,'Empty registration is rejected');
+  const sample={name:'Registration Demo',email:'registration-demo@example.com',mobile:'+12025550147',birthDate:'1995-06-15',password:'SampleSecret987!',confirmPassword:'DifferentSecret987!',terms:false};
+  await fillRegister(sample,true);
+  assert.ok(await evaluate("document.querySelector('.form-error').textContent.includes('do not match')&&document.querySelector('.form-error').textContent.includes('Accept')"),'Password mismatch and terms are validated');
+  await evaluate("document.querySelector('[data-register-password=password]').click();document.querySelector('[data-register-password=confirmPassword]').click()");
+  assert.equal(await evaluate("document.querySelector('input[name=password]').type"),'text');
+  assert.equal(await evaluate("document.querySelector('input[name=confirmPassword]').type"),'text');
+  await evaluate("document.querySelector('[data-register-password=password]').click();document.querySelector('[data-register-password=confirmPassword]').click()");
+  assert.equal(await evaluate("document.querySelector('input[name=password]').type"),'password');
+  await fillRegister({confirmPassword:sample.password,terms:true});
+  await evaluate("(()=>{const f=document.querySelector('.register-form');const day=new Date(f.elements.birthDate.max+'T00:00:00Z');day.setUTCDate(day.getUTCDate()+1);f.elements.birthDate.value=day.toISOString().slice(0,10);f.requestSubmit();})()");
+  assert.ok(await evaluate("document.querySelector('.form-error').textContent.includes('18')"),'Under-18 date is rejected');
+  await evaluate("document.querySelector('[data-register-provider=Google]').click()");
+  assert.ok(await evaluate("document.querySelector('[data-register-feedback]').textContent.includes('not connected')"),'Social signup feedback is honest');
+  await send('Page.navigate',{url:base+'/customer/screens/MEL-U-004'});
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('[data-role-selection]')"))break;await pause(50);}
+  await evaluate("document.querySelector('[data-role-card=host]').click();document.querySelector('.role-form').requestSubmit()");
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.login-access-tabs')"))break;await pause(50);}
+  await evaluate("document.querySelector('.login-access-tabs a:last-child').click()");
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.register-form')"))break;await pause(50);}
+  assert.equal(await evaluate("document.querySelector('input[name=role]').value"),'host','Signup retains the chosen Host role');
+  await send('Page.navigate',{url:base+'/customer/screens/MEL-U-007?returnTo=27'});
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.register-form')"))break;await pause(50);}
+  assert.ok(await evaluate("document.querySelector('.register-login-link a').href.includes('returnTo=27')"),'Login retains booking context');
+  await fillRegister({...sample,confirmPassword:sample.password,terms:true},true);
+  let created=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-008')&&!!document.querySelector('#main')")){created=true;break;}await pause(50);}
+  assert.ok(created,'Valid demo registration opens eligibility');
+  assert.equal(await evaluate("new URLSearchParams(location.search).get('returnTo')"),'27');
+  const saved=await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state'))");
+  assert.equal(saved.profile.name,'Registration Demo');assert.equal(saved.role,'host');assert.equal(saved.profile.adult,false);assert.equal(saved.demoSession,false);
+  const serialized=JSON.stringify(saved);for(const sensitive of [sample.email,sample.mobile,sample.birthDate,sample.password])assert.equal(serialized.includes(sensitive),false,'Registration does not persist '+sensitive);
+  console.log('Registration responsive layout, required fields, 18+ validation, confirmation, terms, visibility controls, provider feedback, Host signup flow, eligibility navigation, booking context and privacy passed.');
  }
  if(process.env.MELO_OTP_ONLY){
   assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'OTP has its own reference layout');

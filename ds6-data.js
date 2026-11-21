@@ -44,4 +44,20 @@ export function categoryErrors(input,categories,editingId){const errors=[];if(!i
 export function listValues(value){return [...new Set(String(value).split(',').map(s=>s.trim()).filter(Boolean))];}
 export function bookingErrors(draft,state){const errors=[];const e=experiences.find(e=>e.id===draft.experience);if(!e)errors.push('Select an experience.');else if(!state.categories.find(c=>c.id===e.category)?.active)errors.push('This category is currently unavailable. Select another experience.');if(!state.profile.adult)errors.push('Confirm you are 18 or older before booking.');if(!draft.date||!/^\d{4}-\d{2}-\d{2}$/.test(draft.date))errors.push('Select a date.');else if(draft.date<today())errors.push('Choose today or a future date.');else if(draft.date===today()&&/^\d{2}:\d{2}$/.test(draft.slot)){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date());if(draft.slot<=parts)errors.push('That time has passed. Choose a future date or slot.');}if(!['10:00','13:00','16:00'].includes(draft.slot))errors.push('Select a valid time slot.');const max=e?.id==='dream'?(rooms.find(r=>r.id===draft.room)?.capacity||0):8;if(!Number.isInteger(Number(draft.count))||Number(draft.count)<1||Number(draft.count)>max)errors.push(`Choose between 1 and ${max} participants.`);if(!draft.guests?.trim())errors.push('Enter participant names.');return errors;}
 export function today(){const p=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v=k=>p.find(x=>x.type===k).value;return `${v('year')}-${v('month')}-${v('day')}`;}
+export function adultBirthDateLimit(reference=today()){const [year,month,day]=reference.split('-').map(Number);const target=year-18;const limit=Math.min(day,new Date(Date.UTC(target,month,0)).getUTCDate());return `${target}-${String(month).padStart(2,'0')}-${String(limit).padStart(2,'0')}`;}
+export function registrationErrors(data,reference=today()){
+  const errors=[];
+  if(!data.name?.trim()||data.name.trim().length>80)errors.push('Enter a sample full name of 80 characters or fewer.');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email||''))errors.push('Enter a valid sample email address.');
+  const mobile=String(data.mobile||'');const digits=mobile.replace(/\D/g,'');
+  if(!/^[+\d\s()-]+$/.test(mobile)||digits.length<7||digits.length>15)errors.push('Enter a sample mobile number with 7–15 digits.');
+  const date=String(data.birthDate||'');const parsed=new Date(date+'T00:00:00Z');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(parsed.getTime())||parsed.toISOString().slice(0,10)!==date)errors.push('Choose a valid sample date of birth.');
+  else if(date>adultBirthDateLimit(reference))errors.push('Melo Space is for adults aged 18 or older.');
+  if(String(data.password||'').trim().length<6)errors.push('Use a sample password with at least six characters.');
+  if(data.password!==data.confirmPassword)errors.push('The sample passwords do not match.');
+  if(!data.terms)errors.push('Accept the Terms & Conditions and Privacy Policy to continue in this demo.');
+  if(!['user','host'].includes(data.role))errors.push('Choose User or Host before creating a demo profile.');
+  return errors;
+}
 export function makeBooking(draft,state,id){const errors=bookingErrors(draft,state);if(errors.length)throw new Error(errors.join(' '));const e=experiences.find(e=>e.id===draft.experience);return {id,title:e.title,...structuredClone(draft),total:bookingTotal(draft),status:'Demo reserved',payment:'Not charged',checkedIn:false,createdAt:new Date().toISOString()};}

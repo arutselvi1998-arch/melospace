@@ -101,3 +101,13 @@ The code is **123456** in this local demo. No real OTP service is connected. Suc
 Preview: http://localhost:3001/customer/screens/MEL-U-006
 
 Verification: `MELO_OTP_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and images, six-box entry, incomplete/incorrect codes, focus advance, Backspace, paste, resend availability/reset, demo verification, and checkout return context. The countdown is advanced only in the isolated test browser to avoid a real 30-second test wait.
+
+## MEL-U-007 create account
+
+The dedicated Create Account screen follows the reference's purple illustrated benefits panel, neon heart/script branding, curved light form surface, and gradient action. Desktop uses a two-column grid of six fields; mobile stacks the fields below the branded header. Fields are full name, email, mobile number, date of birth, password, and password confirmation. Each password field has an independent visibility toggle. Terms and privacy links open the legal information in another tab, leaving the form available.
+
+This is a local demonstration, not live registration. It validates contact-field format, an exact 18+ date-of-birth cutoff, sample password length and confirmation, terms acceptance, and the selected User/Host role. The date cutoff handles leap days. Successful submission saves only the display name and role, resets the local adult declaration and verified-session flag, discards the remaining form data, and opens MEL-U-008. Email, mobile, full birth date, and both passwords are not persisted. Account links and the submission retain a booking return parameter when present. Social signup controls show honest service-unavailable feedback and make no authentication request.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-007
+
+Verification: `MELO_REGISTER_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and artwork, required fields, under-18 rejection, password confirmation, terms, both visibility controls, provider feedback, Host signup from role selection/login, eligibility navigation, return context, and privacy of stored state. Two unit tests cover registration validation, the exact 18th birthday, invalid dates, and leap-day cutoff behavior. All six unit tests and syntax checks pass. Both visual captures were reviewed against the source mockup.
