@@ -28,7 +28,7 @@ try{
   await send('Page.enable');await send('Runtime.enable');
   async function waitFor(expression){for(let i=0;i<100;i++){try{if(await evaluate(expression))return;}catch{}await delay(50);}throw new Error(`Condition not met: ${expression}`);}
   async function navigate(path){await send('Page.navigate',{url:base+path});await waitFor(`location.pathname===${JSON.stringify(path.split('?')[0])} && !!document.querySelector('#main') && document.querySelector('#app')?.textContent.length>50`);}
-  async function screen(n,admin=false,params=''){const code=`MEL-${admin?'A':'U'}-${String(n).padStart(3,'0')}`;await navigate(`/${admin?'admin':'customer'}/screens/${code}${params}`);await waitFor(`document.title.includes('Melo Space') && ${[1,2,11].includes(n)&&!admin?'true':`document.querySelector('.screen-id')?.textContent===${JSON.stringify(code)}`}`);}
+  async function screen(n,admin=false,params=''){const code=`MEL-${admin?'A':'U'}-${String(n).padStart(3,'0')}`;await navigate(`/${admin?'admin':'customer'}/screens/${code}${params}`);await waitFor(`document.title.includes('Melo Space') && document.body.dataset.screen===${JSON.stringify(String(n))} && document.body.dataset.portal===${JSON.stringify(admin?'admin':'user')}`);}
   async function submit(action,values){await evaluate(`(()=>{const f=document.querySelector('form[data-action=${JSON.stringify(action)}]');if(!f)throw Error('Form not found');for(const [k,v] of Object.entries(${JSON.stringify(values)})){const el=f.elements.namedItem(k);if(!el)throw Error('Field '+k+' not found');if(el.type==='checkbox')el.checked=Boolean(v);else el.value=String(v);}f.requestSubmit();})()`);}
   async function waitScreen(n,admin=false){const code=`MEL-${admin?'A':'U'}-${String(n).padStart(3,'0')}`;await waitFor(`location.pathname.endsWith(${JSON.stringify(code)}) && !!document.querySelector('#main')`);}
   // This is the isolated test browser profile, never the user's browser storage.
@@ -52,7 +52,7 @@ try{
   await screen(13);assert.equal(await evaluate(`document.querySelector('#main').textContent.includes('Edited Browser Category')`),false);
   console.log('Category create/edit, tag persistence, and cross-portal visibility passed.');
   // Simulated sign-in and OTP, then the standard booking flow.
-  await screen(5);await submit('demo-login',{name:'Browser Demo Guest',role:'user'});await waitScreen(6);
+  await screen(5);await submit('demo-login',{identifier:'browser-demo@example.com',password:'demo-pass-123'});await waitScreen(6);
   await submit('verify',{code:'000000'});assert.ok(await evaluate(`!document.querySelector('.form-error').hidden`));
   await submit('verify',{code:'123456'});await waitScreen(8);await submit('age',{adult:true});await waitScreen(9);
   await screen(22,false,'?experience=art');await submit('date',{experience:'art',date:'2099-01-02',slot:'13:00'});await waitScreen(23);

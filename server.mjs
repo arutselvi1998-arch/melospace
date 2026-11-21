@@ -11,6 +11,7 @@ assets.set('/ds6-splash.js', ['ds6-splash.js', 'text/javascript']);
 assets.set('/ds6-welcome.js', ['ds6-welcome.js', 'text/javascript']);
 assets.set('/ds6-onboarding.js', ['ds6-onboarding.js', 'text/javascript']);
 assets.set('/ds6-role.js', ['ds6-role.js', 'text/javascript']);
+assets.set('/ds6-login.js', ['ds6-login.js', 'text/javascript']);
 for (const name of ['role-user','role-host']) assets.set('/assets/melo/'+name+'.png', ['assets/melo/'+name+'.png', 'image/png']);
 for (const name of ['onboarding-discover','onboarding-celebrate']) assets.set('/assets/melo/'+name+'.png', ['assets/melo/'+name+'.png', 'image/png']);
 for (const name of ['workshop','craft','dress','celebration','room','photo','meetup','wellness','crochet','party','room-wide','login-art','celebration-hero']) assets.set('/assets/melo/'+name+'.png', ['assets/melo/'+name+'.png', 'image/png']);

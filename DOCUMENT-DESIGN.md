@@ -77,3 +77,15 @@ The portrait cutouts were created with the built-in image-generation tool using 
 Preview: http://localhost:3001/customer/screens/MEL-U-004
 
 Verification: `MELO_ROLE_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile image loading and viewport fit, standalone layout, back destination, keyboard radio selection, selected styling, whole-card selection, one selected role, saved-state restoration, and both User/Host transitions into shared login. Both visual captures were reviewed against the source mockup.
+
+## MEL-U-005 login / sign up
+
+The dedicated login screen follows the reference's illustrated room/brand panel, welcome heading, Login/Sign Up navigation, email-or-mobile and password fields, Remember me, recovery control, gradient Login action, and three social-provider controls. Mobile uses a purple branded header above the light form card. The selected User/Host role is retained from MEL-U-004 and can be changed through that screen.
+
+This remains an explicit local demo. Use a sample email or a 7–15 digit sample mobile number and a sample password of at least six characters; these are demonstration validation rules, not a production password policy. The form discards the password, saves neither identifier nor password, and opens the existing demo verification screen. Remember me stores only a boolean preference. Booking return context is preserved through login and verification.
+
+The password-visibility toggle is keyboard accessible. Account recovery uses a native dialog with Escape support and focus restoration; it explains the disconnected Meetura recovery service and sends no messages. Google, Apple, and WhatsApp controls show provider-specific unavailability feedback without pretending to authenticate. Sign Up and Create an account open MEL-U-007.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-005
+
+Verification: `MELO_LOGIN_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and artwork, password visibility, recovery-dialog focus/Escape, provider feedback, form validation, verification navigation, return context, role preservation, remember preference, and absence of credentials in storage. The updated role-selection checks and full 74-screen/booking browser smoke suite also pass.

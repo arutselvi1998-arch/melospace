@@ -12,7 +12,7 @@ try{
  const send=(method,params={})=>new Promise((ok,no)=>{const key=++id;calls.set(key,{ok,no});socket.send(JSON.stringify({id:key,method,params}));});
  const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.text);return r.result.value;};
  await send('Page.enable');await send('Runtime.enable');await mkdir('test-artifacts',{recursive:true});
- for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844],['onboarding-desktop','/customer/screens/MEL-U-003',1440,900],['onboarding-mobile','/customer/screens/MEL-U-003',390,844],['role-desktop','/customer/screens/MEL-U-004',1440,900],['role-mobile','/customer/screens/MEL-U-004',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-')).filter(c=>!process.env.MELO_ONBOARD_ONLY||c[0].startsWith('onboarding-')).filter(c=>!process.env.MELO_ROLE_ONLY||c[0].startsWith('role-'))){
+ for(const [name,path,width,height]of [['home-document','/customer',1440,1050],['admin-document','/admin',1440,1050],['category-document','/admin/screens/MEL-A-011',1440,1050],['editor-document','/admin/screens/MEL-A-012',1440,1050],['taxonomy-document','/admin/screens/MEL-A-013',1440,1050],['login-document','/customer/screens/MEL-U-005',1440,1050],['home-mobile-document','/customer',390,844],['splash-desktop','/customer/screens/MEL-U-001?preview=1',1440,900],['splash-mobile','/customer/screens/MEL-U-001?preview=1',390,844],['welcome-desktop','/customer/screens/MEL-U-002',1440,900],['welcome-mobile','/customer/screens/MEL-U-002',390,844],['onboarding-desktop','/customer/screens/MEL-U-003',1440,900],['onboarding-mobile','/customer/screens/MEL-U-003',390,844],['role-desktop','/customer/screens/MEL-U-004',1440,900],['role-mobile','/customer/screens/MEL-U-004',390,844],['login-mobile','/customer/screens/MEL-U-005',390,844]].filter(c=>!process.env.MELO_MOBILE_ONLY||c[2]<600).filter(c=>!process.env.MELO_ARTWORK_ONLY||['home-document','category-document','home-mobile-document'].includes(c[0])).filter(c=>!process.env.MELO_SPLASH_ONLY||c[0].startsWith('splash-')).filter(c=>!process.env.MELO_WELCOME_ONLY||c[0].startsWith('welcome-')).filter(c=>!process.env.MELO_ONBOARD_ONLY||c[0].startsWith('onboarding-')).filter(c=>!process.env.MELO_ROLE_ONLY||c[0].startsWith('role-')).filter(c=>!process.env.MELO_LOGIN_ONLY||c[0].startsWith('login-'))){
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});await send('Page.navigate',{url:base+path});
   for(let i=0;i<100;i++){if(await evaluate(`location.pathname===${JSON.stringify(path.split('?')[0])}&&!!document.querySelector('#main')`))break;await pause(50);}
   await evaluate(`(async()=>{const deadline=ms=>new Promise(r=>setTimeout(r,ms));await Promise.race([document.fonts.ready,deadline(3000)]);await Promise.race([Promise.all([...document.images].filter(i=>i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight).map(i=>i.decode().catch(()=>{}))),deadline(6000)]);const hero=new Image();hero.src='/assets/melo/celebration-hero.png';await Promise.race([hero.decode(),deadline(5000)]);})()`);
@@ -21,6 +21,43 @@ try{
   if(process.env.MELO_ONBOARD_ONLY)assert.equal(await evaluate("[...document.querySelectorAll('[data-onboard-card]')].filter(c=>!c.hidden).length"),width<641?1:3,'Correct visible card count');
   if(process.env.MELO_ARTWORK_ONLY){const insufficient=await evaluate(`[...document.images].filter(i=>i.src.includes('/assets/melo/')&&i.getBoundingClientRect().width>0&&i.getBoundingClientRect().top<innerHeight&&i.naturalWidth<i.getBoundingClientRect().width*2).map(i=>({src:i.src,pixels:i.naturalWidth,display:i.getBoundingClientRect().width}))`);assert.deepEqual(insufficient,[],name+' artwork has enough pixels for 2x-density cards');}
   const image=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(`test-artifacts/${name}.png`,Buffer.from(image.data,'base64'));console.log(name+' captured; visible artwork loaded; no horizontal overflow');
+ }
+ if(process.env.MELO_LOGIN_ONLY){
+  assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Login has its own reference layout');
+  assert.ok(await evaluate("document.querySelector('.login-access-tabs a:last-child').href.endsWith('MEL-U-007')"),'Sign Up opens create account');
+  assert.ok(await evaluate("document.querySelector('.login-create-account a').href.endsWith('MEL-U-007')"),'Create account destination');
+  await evaluate("document.querySelector('input[name=password]').value='sample-pass-123';document.querySelector('[data-password-toggle]').click()");
+  assert.equal(await evaluate("document.querySelector('input[name=password]').type"),'text');
+  assert.equal(await evaluate("document.querySelector('[data-password-toggle]').getAttribute('aria-label')"),'Hide password');
+  await evaluate("document.querySelector('[data-password-toggle]').click()");
+  assert.equal(await evaluate("document.querySelector('input[name=password]').type"),'password');
+  await evaluate("document.querySelector('[data-open-recovery]').click()");
+  assert.equal(await evaluate("document.querySelector('.login-recovery').open"),true);
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape'});
+  assert.equal(await evaluate("document.querySelector('.login-recovery').open"),false,'Recovery dialog supports Escape');
+  assert.ok(await evaluate("document.activeElement.matches('[data-open-recovery]')"),'Recovery restores focus');
+  await evaluate("document.querySelector('[data-provider=Google]').click()");
+  assert.ok(await evaluate("document.querySelector('[data-provider-feedback]').textContent.includes('not connected')"),'Social provider has honest local feedback');
+  await evaluate("document.querySelector('input[name=identifier]').value='invalid';document.querySelector('.login-form').requestSubmit()");
+  assert.equal(await evaluate("document.querySelector('.form-error').hidden"),false,'Invalid identifier is rejected');
+  assert.ok(await evaluate("location.pathname.endsWith('MEL-U-005')"));
+  await send('Page.navigate',{url:base+'/customer/screens/MEL-U-005?returnTo=27'});
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.login-form')"))break;await pause(50);}
+  assert.ok(await evaluate("document.querySelector('.login-access-tabs a.is-current').href.includes('returnTo=27')"),'Current login link retains booking destination');
+  await evaluate("(()=>{const f=document.querySelector('.login-form');f.elements.identifier.value='privacy-check@example.com';f.elements.password.value='SecretSample987!';f.elements.role.value='host';f.elements.remember.checked=true;f.requestSubmit();})()");
+  let verified=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-006')&&!!document.querySelector('#main')")){verified=true;break;}await pause(50);}
+  assert.ok(verified,'Demo login opens verification');
+  assert.equal(await evaluate("new URLSearchParams(location.search).get('returnTo')"),'27','Booking return context retained');
+  assert.equal(await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).role"),'host');
+  assert.equal(await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).preferences.rememberDemoLogin"),true);
+  assert.equal(await evaluate("localStorage.getItem('melo-ds6-state').includes('privacy-check@example.com')||localStorage.getItem('melo-ds6-state').includes('SecretSample987!')"),false,'Credentials are not stored');
+  await send('Page.navigate',{url:base+'/customer/screens/MEL-U-005'});
+  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.login-form')"))break;await pause(50);}
+  assert.equal(await evaluate("document.querySelector('input[name=remember]').checked"),true,'Demo remember preference persists');
+  assert.equal(await evaluate("document.querySelector('input[name=password]').value"),'','Password is not repopulated');
+  assert.equal(await evaluate("document.querySelector('input[name=identifier]').value"),'','Identifier is not repopulated');
+  console.log('Login responsive layout, password toggle, recovery/focus, provider feedback, validation, OTP transition, booking context, role, remember preference, and credential privacy passed.');
  }
  if(process.env.MELO_ROLE_ONLY){
   assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Role selection is standalone');
@@ -34,7 +71,7 @@ try{
   let opened=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-005')&&!!document.querySelector('form[data-action=demo-login]')")){opened=true;break;}await pause(50);}
   assert.ok(opened,'Host continues to shared login');
   assert.equal(await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).role"),'host');
-  assert.equal(await evaluate("document.querySelector('select[name=role]').value"),'host','Login retains Host role');
+  assert.equal(await evaluate("document.querySelector('input[name=role]').value"),'host','Login retains Host role');
   await send('Page.navigate',{url:base+'/customer/screens/MEL-U-004'});
   for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('[data-role-selection]')"))break;await pause(50);}
   assert.equal(await evaluate("document.querySelector('input[name=role]:checked').value"),'host','Selection persists on return');
@@ -45,7 +82,7 @@ try{
   let userOpened=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-005')&&!!document.querySelector('form[data-action=demo-login]')")){userOpened=true;break;}await pause(50);}
   assert.ok(userOpened,'User continues to shared login');
   assert.equal(await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).role"),'user');
-  assert.equal(await evaluate("document.querySelector('select[name=role]').value"),'user');
+  assert.equal(await evaluate("document.querySelector('input[name=role]').value"),'user');
   console.log('Role-selection desktop/mobile layout, keyboard, whole-card selection, single choice, persistence, and both shared-login flows passed.');
  }
  if(process.env.MELO_ONBOARD_ONLY){

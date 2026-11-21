@@ -16,6 +16,8 @@ Run `npm run check` for JavaScript syntax validation.
 
 ## Prototype scope
 
+The redesigned MEL-U-005 login accepts sample details only: try `demo@example.com` and any sample password of six or more characters, followed by the displayed demo OTP `123456`. It sends no credentials to a service and stores neither the identifier nor password. The Remember me control saves only a local preference.
+
 Experience discovery and filters, experience details, a private-room customization form, demo booking creation, customer booking records, admin booking metrics, staff booking-reference lookup and demo check-in, plus the complete admin/staff navigation structure. Unimplemented modules are explicitly marked as planned. Data is stored only in this browser's localStorage and is shared across portals on the same origin.
 
 This is a local demo, with no real authentication, role enforcement, live availability, payments, valid QR tickets, or production data storage. Use sample guest names only. All portal routes are intentionally accessible for local exploration. The server binds to loopback only; do not expose this prototype as a production booking system.
