@@ -65,3 +65,15 @@ Two high-resolution illustrations were made with the built-in image-generation t
 Preview: http://localhost:3001/customer/screens/MEL-U-003
 
 Verification: `MELO_ONBOARD_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork and viewport fit, three desktop cards versus one mobile card, progress/Next controls, keyboard navigation, touch swipes, Skip destination, and completion to Role Selection. Both visual captures were reviewed against the source mockup.
+
+## MEL-U-004 role selection — user / host
+
+The dedicated role-selection page follows the reference's heading, two portrait cards, selection outlines, small feature icons, pink/lavender surfaces, curved footer, and gradient Continue action. Desktop places the cards side by side; mobile stacks them and provides a back link to onboarding. The whole card acts as a native radio label, with a visible selected state and keyboard focus.
+
+User is the initial choice unless a saved Host choice exists. Only User and Host are accepted. Continue saves the choice and opens MEL-U-005 shared Meetura login, with the chosen role retained in that flow. It does not create independent authentication or implement the existing Partner Portal.
+
+The portrait cutouts were created with the built-in image-generation tool using transparent backgrounds and saved as `assets/melo/role-user.png` and `assets/melo/role-host.png`. Final prompts are in `assets/melo/role-artwork-prompts.json`.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-004
+
+Verification: `MELO_ROLE_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile image loading and viewport fit, standalone layout, back destination, keyboard radio selection, selected styling, whole-card selection, one selected role, saved-state restoration, and both User/Host transitions into shared login. Both visual captures were reviewed against the source mockup.

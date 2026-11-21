@@ -1,0 +1,16 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "name": "user",
+      "path": "assets/melo/role-user.png",
+      "prompt": "Create a premium photorealistic isolated website character cutout, 1024x1024, transparent background. A fictional stylish adult Indian woman aged 25 to 30 with long dark wavy hair, wearing a soft blush-pink casual blouse, smiling naturally while looking down at and using a smartphone held in her hands. Waist-up portrait, complete head, shoulders, arms and hands, relaxed friendly pose, three-quarter angle facing slightly right. Warm flattering studio lighting, realistic anatomy and skin texture, crisp detailed edges and hair. Melo Space feminine pink/lavender design aesthetic. No scenery, no backdrop, no floor, no shadow panel. No text, logos, borders or UI. Real transparent alpha background."
+    },
+    {
+      "name": "host",
+      "path": "assets/melo/role-host.png",
+      "prompt": "Create a premium photorealistic isolated website character cutout, 1024x1024, transparent background. A fictional confident friendly adult Indian woman aged 28 to 35 with dark curly hair tied in a loose bun, wearing a lavender blazer over a cream top, holding a warm tan clipboard with both hands while smiling and looking slightly to her right. Waist-up portrait, complete head, shoulders, arms and hands, relaxed professional facilitator pose. Warm flattering studio lighting, realistic anatomy and skin texture, crisp detailed edges and hair. Melo Space feminine pink/lavender design aesthetic. No scenery, no backdrop, no floor, no shadow panel. No text, logos, borders or UI. Real transparent alpha background."
+    }
+  ]
+}

@@ -6,6 +6,8 @@ if (location.pathname.startsWith('/staff')) {
   startSplash();
   const {startOnboarding}=await import('./ds6-onboarding.js');
   startOnboarding();
+  const {startRoleSelection}=await import('./ds6-role.js');
+  startRoleSelection();
   // One delegated controller keeps the footer trigger and drawer close control in sync.
   document.addEventListener('click',event=>{
     const trigger=event.target.closest('.ds-menu');
