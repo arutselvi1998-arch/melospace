@@ -1,0 +1,8 @@
+{
+  "name": "melo-space",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node server.mjs", "check": "node --check server.mjs && node --check app.js && node --check ds6-app.js && node --check ds6-data.js && node --check ds6-entry.js && node --check ds6-design.js", "test": "node --test tests/ds6.test.mjs" },
+  "engines": { "node": ">=20" }
+}

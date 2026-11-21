@@ -1,0 +1,49 @@
+/* TURA Shopping theme adaptation. Loaded after the original layout styles. */
+body{color:var(--melo-color-text);background:var(--melo-color-background)}
+header{max-width:1176px;background:#fff;border-color:#eaeaea}
+.logo{color:#e6005c;letter-spacing:-1.1px;font-weight:700}
+.logo small{color:#6b7280}
+button,.button{border-radius:12px;background:#e6005c;font-weight:600;transition:background-color 160ms ease,box-shadow 160ms ease}
+.hero .button{background:var(--melo-gradient-primary);font-size:18px}
+button:hover,.button:hover{background:#c90050;box-shadow:0 4px 14px rgb(230 0 92 / 15%)}
+.secondary{background:#fff;color:#1e1e1e;border-color:#eaeaea}
+.secondary:hover{background:#fff5f8;color:#c90050}
+:focus-visible{outline:3px solid #a258ba;outline-offset:3px}
+main{max-width:1176px}
+h1{font-weight:700;letter-spacing:-1.5px}
+h2,h3{color:#1e1e1e}
+.hero{border-radius:24px;background:linear-gradient(115deg,#fff5f8,#ffe7f1);border:1px solid #ffe7f1}
+.hero h1{color:#1e1e1e}
+.hero .eyebrow{color:#c90050}
+.art{background:linear-gradient(145deg,#ffdfed,#fff5f8);border:1px solid #ffd0e2}
+.art:before{background:#ffb6d1}
+.art:after{background:#ff2e79}
+.art span{color:#c90050}
+.card{border-color:#eaeaea;border-radius:18px;box-shadow:var(--melo-shadow-card)}
+.card-art{background:linear-gradient(135deg,#fff5f8,#ffe7f1);color:#e6005c}
+.badge{background:#ffe7f1;color:#a80043}
+.muted{color:#6b7280}
+.demo{background:#ffe7f1;color:#8c0038;border-bottom:1px solid #ffd5e5}
+.summary{background:#fff5f8;border:1px solid #ffe7f1;border-radius:18px}
+.filters button{color:#1e1e1e;border-color:#eaeaea;border-radius:12px}
+.filters button[aria-pressed=true]{background:#e6005c;color:#fff;border-color:#e6005c}
+.filters button:hover{background:#ffe7f1;color:#a80043}
+.sidebar{background:#fff;color:#1e1e1e;border-right:1px solid #eaeaea}
+.sidebar summary{color:#6b7280;font-weight:500}
+.sidebar a{color:#1e1e1e}
+.sidebar a:hover{background:#fff5f8;color:#c90050}
+.sidebar a[aria-current=page]{background:#ffe7f1;color:#a80043;font-weight:600}
+.workspace header{max-width:none}
+.workspace .eyebrow{color:#6b7280}
+nav a[aria-current=page]{color:#c90050}
+.metric strong{color:#1e1e1e}
+th,td{border-color:#eaeaea}
+th{color:#6b7280}
+.footer{border-color:#eaeaea;background:#fff;color:#6b7280}
+.bottom{border-color:#eaeaea;box-shadow:0 -4px 20px rgb(0 0 0 / 3%)}
+.bottom a[aria-current=page]{background:#ffe7f1;color:#a80043}
+#notice:not(:empty){background:#1e1e1e}
+.ticket{color:#c90050}
+input,select{color:#1e1e1e;border-color:var(--melo-color-control-border)}
+input:focus,select:focus{border-color:#e6005c}
+@media(prefers-reduced-motion:reduce){button,.button{transition:none}}

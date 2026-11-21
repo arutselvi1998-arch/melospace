@@ -1,0 +1,118 @@
+/* Melo Space — proposed tokens derived from the supplied visual reference. */
+:root {
+  --melo-color-background: #fff9f6;
+  --melo-color-surface: #ffffff;
+  --melo-color-blush: #f8e9f0;
+  --melo-color-rose: #f1dceb;
+  --melo-color-lavender: #e7d9f6;
+  --melo-color-peach: #f4dccb;
+  --melo-color-primary: #945078;
+  --melo-color-primary-hover: #7b4064;
+  --melo-color-on-primary: #ffffff;
+  --melo-color-text: #55364d;
+  --melo-color-text-muted: #715c6b;
+  --melo-color-border: #dcc9d5;
+  --melo-color-control-border: #927487;
+  --melo-color-brand-primary: #ad628b;
+  --melo-color-primary-dark: #6b3354;
+  --melo-color-success: #62765b;
+  --melo-color-warning: #a56a21;
+  --melo-color-error: #b83f58;
+  --melo-color-sidebar: var(--melo-color-primary-dark);
+  --melo-color-sidebar-text: #ffffff;
+  --melo-color-nav-active: var(--melo-color-rose);
+  --melo-color-nav-active-text: var(--melo-color-primary-dark);
+  --melo-font-family: 'Manrope', Arial, sans-serif;
+  --melo-font-size-small: 0.875rem;
+  --melo-font-size-body: 1rem;
+  --melo-font-size-card: 1.25rem;
+  --melo-font-size-section: clamp(1.5rem, 1.2rem + 1vw, 1.75rem);
+  --melo-font-size-heading: clamp(1.875rem, 1.3rem + 2vw, 2.5rem);
+  --melo-font-size-display: clamp(2.25rem, 1.4rem + 3vw, 3.5rem);
+  --melo-space-1: 0.25rem;
+  --melo-space-2: 0.5rem;
+  --melo-space-3: 0.75rem;
+  --melo-space-4: 1rem;
+  --melo-space-6: 1.5rem;
+  --melo-space-8: 2rem;
+  --melo-space-12: 3rem;
+  --melo-space-16: 4rem;
+  --melo-space-24: 6rem;
+  --melo-radius-input: 0.75rem;
+  --melo-radius-small: 0.5rem;
+  --melo-radius-medium: 0.75rem;
+  --melo-radius-large: 1.25rem;
+  --melo-radius-image: 1rem;
+  --melo-radius-card: 1.5rem;
+  --melo-radius-pill: 999px;
+  --melo-content-width: 75rem;
+  --melo-control-height: 3rem;
+  --melo-touch-target: 2.75rem;
+  --melo-staff-action-height: 3.5rem;
+  --melo-shadow-card: 0 8px 24px rgb(85 54 77 / 6%);
+  --melo-focus-ring: 3px solid var(--melo-color-primary);
+  --melo-focus-offset: 3px;
+  --melo-duration-fast: 160ms;
+  --melo-duration-normal: 220ms;
+  --melo-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Compatibility names from the supplied reference; prefer melo tokens in new code.
+   Pastel values retain the established Melo palette where the image is unclear.
+   Brand primary is decorative; use melo-color-primary for white-label buttons. */
+:root {
+  --hs-primary: var(--melo-color-brand-primary);
+  --hs-primary-dark: var(--melo-color-primary-dark);
+  --hs-blush: var(--melo-color-blush);
+  --hs-lavender: var(--melo-color-lavender);
+  --hs-peach: var(--melo-color-peach);
+  --hs-background: var(--melo-color-background);
+  --hs-surface: var(--melo-color-surface);
+  --hs-text: var(--melo-color-text);
+  --hs-text-muted: var(--melo-color-text-muted);
+  --hs-border: var(--melo-color-border);
+  --hs-success: var(--melo-color-success);
+  --hs-warning: var(--melo-color-warning);
+  --hs-error: var(--melo-color-error);
+  --hs-radius-sm: var(--melo-radius-small);
+  --hs-radius-md: var(--melo-radius-medium);
+  --hs-radius-lg: var(--melo-radius-large);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --melo-duration-fast: 0ms;
+    --melo-duration-normal: 0ms;
+  }
+}
+
+/* Current theme: TURA Shopping alignment, requested by the user.
+   Source: https://turashopping.com/styles-IJYECHEW.css */
+:root {
+  --melo-font-family: 'Poppins', Arial, sans-serif;
+  --melo-color-background: #fafafc;
+  --melo-color-surface: #ffffff;
+  --melo-color-blush: #fff5f8;
+  --melo-color-rose: #ffe7f1;
+  --melo-color-lavender: #fff5f8;
+  --melo-color-peach: #ffe7f1;
+  --melo-color-brand-primary: #ff2e79;
+  --melo-color-primary: #e6005c;
+  --melo-color-primary-dark: #e6005c;
+  --melo-color-primary-hover: #c90050;
+  --melo-color-accent: #d4af37;
+  --melo-color-text: #1e1e1e;
+  --melo-color-text-muted: #6b7280;
+  --melo-color-border: #eaeaea;
+  --melo-color-control-border: #85858f;
+  --melo-color-sidebar: #ffffff;
+  --melo-color-sidebar-text: #1e1e1e;
+  --melo-color-nav-active: #ffe7f1;
+  --melo-color-nav-active-text: #c90050;
+  --melo-radius-card: 1.125rem;
+  --melo-radius-button: 0.75rem;
+  --melo-shadow-card: 0 4px 20px rgb(0 0 0 / 6%);
+  --melo-content-width: 70rem;
+  --melo-focus-ring: 3px solid #a258ba;
+  --melo-gradient-primary: linear-gradient(135deg, #ff2e79, #e6005c);
+}

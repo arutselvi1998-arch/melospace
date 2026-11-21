@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+tura-reference.html
+tura-reference.css
+.browser-profile/
+.browser-profile-visual/
+.browser-profile-visual-*/
+test-artifacts/
+reference-design/
+document-screen-reference.txt

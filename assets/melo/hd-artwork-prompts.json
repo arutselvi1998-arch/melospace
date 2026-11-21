@@ -1,0 +1,51 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Replace blurred Word-document crops with high-resolution recreated artwork",
+  "assets": [
+    {
+      "name": "workshop",
+      "path": "assets/melo/workshop-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A real artist's wooden paint palette with vivid colorful paints and several fine paintbrushes, small blank canvas, on a blush pink creative studio table, charming flowers and warm bokeh in background. Detailed bristles and paint texture."
+    },
+    {
+      "name": "craft",
+      "path": "assets/melo/craft-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. Three beautifully detailed soft yarn balls in hot pink, sunny yellow, and cream, with a smooth wooden crochet hook lying diagonally beside them, pink tabletop and soft pink backdrop. Close product photography, sharp fiber texture."
+    },
+    {
+      "name": "dress",
+      "path": "assets/melo/dress-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A beautiful pink tulle celebration gown on an elegant headless dressmaker mannequin in a feminine dressing studio, golden arched mirror, delicate flowers, rose-pink curtains, warm golden lights. Entire gown readable, luxurious soft layered fabric, no person."
+    },
+    {
+      "name": "celebration",
+      "path": "assets/melo/celebration-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A beautifully decorated pink two-tier birthday cake with small lit candles and delicate pink flowers on a gold cake stand, wrapped blush pink presents, warm fairy lights and pink balloons behind, elegant celebration room."
+    },
+    {
+      "name": "room",
+      "path": "assets/melo/room-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A beautifully styled private celebration room, plush blush pink sofa under a glowing neon pink heart outline on deep purple wall, gold sheer curtains, pink flowers, candlelight and warm fairy lights, soft cushions and tasteful gifts. No text or people."
+    },
+    {
+      "name": "photo",
+      "path": "assets/melo/photo-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A beautiful vintage silver-and-black camera with a textured tan leather strap on a blush pink studio table, peonies and soft golden fairy lights in background, detailed camera lens reflections, elegant warm product photography."
+    },
+    {
+      "name": "meetup",
+      "path": "assets/melo/meetup-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A small group of four stylish adult friends, ages 25 to 35, of diverse backgrounds, chatting and laughing naturally around a creative workshop table in a warm purple-and-pink celebration lounge. Subtle glowing pink heart outline in background, flowers, craft materials, candid friendly scene. Realistic adult faces and hands, no children."
+    },
+    {
+      "name": "wellness",
+      "path": "assets/melo/wellness-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A luxury self-care spa still life: three warm ivory pillar candles lit beside neatly rolled cream towels, a small ceramic bowl and green tropical leaves, soft blush pink and lavender background, natural warm glow, crisp elegant product detail."
+    },
+    {
+      "name": "crochet",
+      "path": "assets/melo/crochet-hd.png",
+      "prompt": "Create a sharp premium photorealistic landscape website card illustration, 1536x1024. Melo Space design system: rich warm pink, fuchsia, blush and purple accents, soft golden fairy-light bokeh, polished beautiful staged photography with crisp detailed main subject, warm inviting celebration atmosphere. Landscape composition with main subject centered and fully visible within middle 70 percent so it crops well to 16:9 and square. NO TEXT, NO LETTERS, NO LOGOS, NO WATERMARKS, NO UI, NO BUTTONS, NO FRAME. A gorgeous handcrafted bright hot-pink crocheted handbag with two rounded handles, decorated with three white crochet daisies with golden yellow centers. Bag centered on a blush pink tabletop with pink and cream yarn balls beside it, subtle plant leaves and warm golden fairy-light bokeh. Ultra-sharp detailed crochet stitch texture and complete bag handles."
+    }
+  ]
+}
