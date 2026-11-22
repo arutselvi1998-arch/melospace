@@ -71,4 +71,5 @@ export function profileCompletionErrors(data,categories,reference=today()){
   if(data.photo&&(!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=\r\n]+$/.test(data.photo)||data.photo.length>2900000))errors.push('Choose a PNG, JPEG, or WebP profile image under 2 MB.');
   return errors;
 }
+export function interestSelectionErrors(ids,categories){const errors=[];if(!Array.isArray(ids))return ['Choose interests from the available categories.'];if(new Set(ids).size>6)errors.push('Choose up to six interests to continue.');if(ids.some(id=>!categories.some(c=>c.id===id&&c.active)))errors.push('Choose interests from the available categories.');return errors;}
 export function makeBooking(draft,state,id){const errors=bookingErrors(draft,state);if(errors.length)throw new Error(errors.join(' '));const e=experiences.find(e=>e.id===draft.experience);return {id,title:e.title,...structuredClone(draft),total:bookingTotal(draft),status:'Demo reserved',payment:'Not charged',checkedIn:false,createdAt:new Date().toISOString()};}

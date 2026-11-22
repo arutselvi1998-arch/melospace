@@ -123,3 +123,15 @@ The photo picker accepts PNG, JPEG, or WebP up to 2 MB, validates decoding, prev
 Preview: http://localhost:3001/customer/screens/MEL-U-009
 
 Verification: `MELO_PROFILE_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork and layout, eligibility handoff, required fields, adult-date validation, native choices, live completion, unsupported/oversized images, photo preview/removal, draft-versus-saved photo state, persistence after reload, interest continuity, and booking-return context. Two additional unit tests cover profile validation and supported local-avatar sources. All eight unit tests and syntax checks pass; desktop/mobile captures were reviewed against the reference.
+
+## MEL-U-010 select interests
+
+The dedicated interests screen follows the reference's illustrated purple brand panel, four-stage Account/Profile/Interests/Done stepper, image-based category grid, pink selected outlines/checkmarks, selected-tag pills, curved footer, and gradient Continue action. Desktop uses four columns; mobile uses three. The existing high-resolution category artwork is reused.
+
+Selections from Complete Profile are restored. Native checkboxes support pointer and keyboard use. Users can choose zero through six distinct active categories, remove a choice through its tag, and reload without losing saved preferences. The seventh new choice is rejected with an accessible explanation; submission validates the limit and active category IDs as well. Older saved sets above six are not silently truncated: the screen asks the user to remove choices before continuing.
+
+Continue saves preferences only in this browser and opens MEL-U-011, or resumes MEL-U-027 when a booking return parameter is present. Demo home/discovery lists prioritize matching selected categories while continuing to exclude hidden categories. This is local category matching, not a connected recommendation service or a grant of account access. The setup stepper represents navigation progress rather than identity verification.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-010
+
+Verification: `MELO_INTERESTS_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork and layout, restored profile selections, keyboard toggling, selected states, the six-choice limit, tag removal, save/reload behavior, matching experience ordering, and booking return. The visual fixture uses three saved preferences in its isolated browser profile to compare selected styles with the reference. The new validation test covers empty, six, excessive, duplicate, inactive, and unknown selections. All nine unit tests and syntax checks pass.

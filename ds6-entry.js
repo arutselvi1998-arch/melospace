@@ -16,6 +16,8 @@ if (location.pathname.startsWith('/staff')) {
   startRegistration();
   const {startProfileCompletion}=await import('./ds6-profile.js');
   startProfileCompletion();
+  const {startInterestSelection}=await import('./ds6-interests.js');
+  startInterestSelection();
   // One delegated controller keeps the footer trigger and drawer close control in sync.
   document.addEventListener('click',event=>{
     const trigger=event.target.closest('.ds-menu');

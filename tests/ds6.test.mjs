@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {registrationErrors,adultBirthDateLimit} from '../ds6-data.js';
 import {profileCompletionErrors} from '../ds6-data.js';
+import {interestSelectionErrors} from '../ds6-data.js';
 import {userScreens,adminScreens,initialState,categoryErrors,listValues,bookingTotal,makeBooking,bookingErrors} from '../ds6-data.js';
 
 test('DS6 preserves every named screen and stops admin at category management',()=>{
@@ -82,4 +83,15 @@ test('profile completion restricts selections and avatar sources to local suppor
   assert.ok(profileCompletionErrors({...data,interests:[],photo:'javascript:alert(1)'},state.categories).some(e=>e.includes('image')));
   assert.ok(profileCompletionErrors({...data,interests:[],photo:'data:image/svg+xml;base64,AAAA'},state.categories).some(e=>e.includes('image')));
   assert.deepEqual(profileCompletionErrors({...data,interests:[],photo:'data:image/png;base64,AAAA'},state.categories),[]);
+});
+test('interests allow zero through six distinct active categories and reject invalid or unavailable choices',()=>{
+  const state=initialState();const six=state.categories.slice(0,6).map(c=>c.id);
+  assert.deepEqual(interestSelectionErrors([],state.categories),[]);
+  assert.deepEqual(interestSelectionErrors(six,state.categories),[]);
+  assert.deepEqual(interestSelectionErrors(['art','art','craft'],state.categories),[]);
+  assert.ok(interestSelectionErrors(state.categories.slice(0,7).map(c=>c.id),state.categories).some(e=>e.includes('six')));
+  assert.ok(interestSelectionErrors(['unknown'],state.categories).some(e=>e.includes('available')));
+  state.categories[0].active=false;
+  assert.ok(interestSelectionErrors(['art'],state.categories).some(e=>e.includes('available')));
+  assert.ok(interestSelectionErrors(null,state.categories).length);
 });
