@@ -111,3 +111,15 @@ This is a local demonstration, not live registration. It validates contact-field
 Preview: http://localhost:3001/customer/screens/MEL-U-007
 
 Verification: `MELO_REGISTER_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile layout and artwork, required fields, under-18 rejection, password confirmation, terms, both visibility controls, provider feedback, Host signup from role selection/login, eligibility navigation, return context, and privacy of stored state. Two unit tests cover registration validation, the exact 18th birthday, invalid dates, and leap-day cutoff behavior. All six unit tests and syntax checks pass. Both visual captures were reviewed against the source mockup.
+
+## MEL-U-009 complete profile
+
+The dedicated profile screen follows the reference's illustrated magenta side panel, circular portrait/camera control, profile-completion bar, lilac section headings, profile fields, gender pills, interest choices, and gradient Complete Profile action. Mobile uses a compact single-column form; the interest grid remains accessible in an expandable section. Progress is calculated from actual filled groups and uploaded-photo state rather than reproducing the reference's illustrative percentage.
+
+Full name and city/location are required. Birth date, gender, country, interests, and photo are optional; a supplied birth date must be valid and at least 18 years old. This profile form does not independently mark the adult declaration or establish a verified session. Age Eligibility now hands off to Complete Profile consistently, including after demo registration. Completion opens MEL-U-010 with chosen interests retained and forwards a booking-return parameter when present.
+
+The photo picker accepts PNG, JPEG, or WebP up to 2 MB, validates decoding, previews the selection, and supports removal before saving. Nothing is uploaded to a server. On submission, the profile data—including any optionally supplied birth date and photo—is saved only to this browser's localStorage, as stated in the form. Registration in MEL-U-007 continues to discard its contact fields, birth date, and passwords; this later profile form separately saves only the information explicitly completed here. The sample portrait is illustrative and does not imply the user's identity or gender.
+
+Preview: http://localhost:3001/customer/screens/MEL-U-009
+
+Verification: `MELO_PROFILE_ONLY=1` with `tests/design-capture.mjs` checks desktop/mobile artwork and layout, eligibility handoff, required fields, adult-date validation, native choices, live completion, unsupported/oversized images, photo preview/removal, draft-versus-saved photo state, persistence after reload, interest continuity, and booking-return context. Two additional unit tests cover profile validation and supported local-avatar sources. All eight unit tests and syntax checks pass; desktop/mobile captures were reviewed against the reference.

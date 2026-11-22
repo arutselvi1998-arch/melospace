@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {registrationErrors,adultBirthDateLimit} from '../ds6-data.js';
+import {profileCompletionErrors} from '../ds6-data.js';
 import {userScreens,adminScreens,initialState,categoryErrors,listValues,bookingTotal,makeBooking,bookingErrors} from '../ds6-data.js';
 
 test('DS6 preserves every named screen and stops admin at category management',()=>{
@@ -60,4 +61,25 @@ test('registration validates contact fields, sample password confirmation, conse
   assert.ok(registrationErrors({...data,confirmPassword:'Different'},'2026-11-21').some(e=>e.includes('do not match')));
   assert.ok(registrationErrors({...data,terms:false},'2026-11-21').some(e=>e.includes('Accept')));
   assert.ok(registrationErrors({...data,role:'admin'},'2026-11-21').some(e=>e.includes('User or Host')));
+});
+
+test('profile completion validates required identity/location and any supplied adult birth date',()=>{
+  const state=initialState();const data={name:'Profile Demo',city:'Sample City',country:'',birthDate:'',gender:'',interests:[],photo:''};
+  assert.deepEqual(profileCompletionErrors(data,state.categories,'2026-11-21'),[]);
+  assert.ok(profileCompletionErrors({...data,name:''},state.categories,'2026-11-21').some(e=>e.includes('full name')));
+  assert.ok(profileCompletionErrors({...data,city:''},state.categories,'2026-11-21').some(e=>e.includes('city')));
+  assert.deepEqual(profileCompletionErrors({...data,birthDate:'2008-11-21'},state.categories,'2026-11-21'),[]);
+  assert.ok(profileCompletionErrors({...data,birthDate:'2008-11-22'},state.categories,'2026-11-21').some(e=>e.includes('18')));
+  assert.ok(profileCompletionErrors({...data,birthDate:'1995-02-30'},state.categories,'2026-11-21').some(e=>e.includes('valid sample date')));
+});
+test('profile completion restricts selections and avatar sources to local supported image data',()=>{
+  const state=initialState();const data={name:'Profile Demo',city:'Sample City',gender:'female',interests:['art'],photo:''};
+  assert.deepEqual(profileCompletionErrors(data,state.categories,'2026-11-21'),[]);
+  assert.ok(profileCompletionErrors({...data,gender:'invalid'},state.categories,'2026-11-21').some(e=>e.includes('gender')));
+  assert.ok(profileCompletionErrors({...data,interests:['unknown']},state.categories,'2026-11-21').some(e=>e.includes('interests')));
+  state.categories[0].active=false;
+  assert.ok(profileCompletionErrors(data,state.categories,'2026-11-21').some(e=>e.includes('interests')));
+  assert.ok(profileCompletionErrors({...data,interests:[],photo:'javascript:alert(1)'},state.categories).some(e=>e.includes('image')));
+  assert.ok(profileCompletionErrors({...data,interests:[],photo:'data:image/svg+xml;base64,AAAA'},state.categories).some(e=>e.includes('image')));
+  assert.deepEqual(profileCompletionErrors({...data,interests:[],photo:'data:image/png;base64,AAAA'},state.categories),[]);
 });

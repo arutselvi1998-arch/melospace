@@ -60,4 +60,15 @@ export function registrationErrors(data,reference=today()){
   if(!['user','host'].includes(data.role))errors.push('Choose User or Host before creating a demo profile.');
   return errors;
 }
+export function profileCompletionErrors(data,categories,reference=today()){
+  const errors=[];
+  if(!data.name?.trim()||data.name.trim().length>80)errors.push('Enter a sample full name of 80 characters or fewer.');
+  if(!data.city?.trim()||data.city.trim().length>80)errors.push('Enter a sample city or location of 80 characters or fewer.');
+  if(String(data.country||'').length>80)errors.push('Keep the country name to 80 characters or fewer.');
+  if(data.birthDate){const date=String(data.birthDate),parsed=new Date(date+'T00:00:00Z');if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(parsed.getTime())||parsed.toISOString().slice(0,10)!==date)errors.push('Choose a valid sample date of birth.');else if(date>adultBirthDateLimit(reference))errors.push('Melo Space is for adults aged 18 or older.');}
+  if(!['','female','male','other'].includes(data.gender||''))errors.push('Choose one of the available gender options.');
+  if(!Array.isArray(data.interests)||data.interests.some(id=>!categories.some(c=>c.id===id&&c.active)))errors.push('Choose interests from the available categories.');
+  if(data.photo&&(!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=\r\n]+$/.test(data.photo)||data.photo.length>2900000))errors.push('Choose a PNG, JPEG, or WebP profile image under 2 MB.');
+  return errors;
+}
 export function makeBooking(draft,state,id){const errors=bookingErrors(draft,state);if(errors.length)throw new Error(errors.join(' '));const e=experiences.find(e=>e.id===draft.experience);return {id,title:e.title,...structuredClone(draft),total:bookingTotal(draft),status:'Demo reserved',payment:'Not charged',checkedIn:false,createdAt:new Date().toISOString()};}
