@@ -1,3 +1,5 @@
+> Current backend: Node.js 24 + SQLite now powers local signup, email/password login, customer profiles, bookings, cancellation, rescheduling, and protected admin customer records. Run `npm start`; see [BACKEND.md](BACKEND.md) for setup and current limits. Earlier browser-only descriptions below describe the previous frontend preview.
+
 # Melo Space
 
 The current user and admin interfaces follow [DS6 from the supplied Word document](DS6-IMPLEMENTATION.md): all 61 named user screens and 13 admin screens ending at Category Management. Admin category edits feed user discovery. Missing user IDs 053–056 are flagged rather than invented. Existing staff pages remain the earlier prototype.

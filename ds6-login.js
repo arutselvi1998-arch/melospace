@@ -19,8 +19,8 @@ export function loginScreen(screenLink,selectedRole,remember=false){
         <nav class="login-access-tabs" aria-label="Account access"><a class="is-current" href="${link(5)}" aria-current="page">Login</a><a href="${link(7)}">Sign Up</a></nav>
         <div class="login-role-context"><span>User account</span></div>
         <form data-action="demo-login" class="login-form" autocomplete="off"><div class="form-error" role="alert" tabindex="-1" hidden></div><input type="hidden" name="role" value="${role}">
-          <label for="login-identifier">Email or mobile number</label><div class="login-input-wrap">${icon('user')}<input id="login-identifier" name="identifier" type="text" required maxlength="120" placeholder="demo@example.com" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
-          <label for="login-password">Password</label><div class="login-input-wrap login-password-wrap">${icon('lock')}<input id="login-password" name="password" type="password" required minlength="6" maxlength="120" placeholder="Sample password (6+ characters)" autocomplete="off" aria-describedby="login-demo-note"><button type="button" class="login-password-toggle" data-password-toggle aria-label="Show password" aria-pressed="false">${eye}</button></div>
+          <label for="login-identifier">Email address</label><div class="login-input-wrap">${icon('user')}<input id="login-identifier" name="identifier" type="text" required maxlength="120" placeholder="demo@example.com" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
+          <label for="login-password">Password</label><div class="login-input-wrap login-password-wrap">${icon('lock')}<input id="login-password" name="password" type="password" required minlength="6" maxlength="120" placeholder="Your password" autocomplete="off" aria-describedby="login-demo-note"><button type="button" class="login-password-toggle" data-password-toggle aria-label="Show password" aria-pressed="false">${eye}</button></div>
           <div class="login-form-options"><label class="login-remember"><input type="checkbox" name="remember" ${remember?'checked':''}><span>Remember me</span></label><button class="login-forgot" type="button" data-open-recovery>Forgot password?</button></div>
           <button type="submit" class="login-submit">Login</button>
         </form>
@@ -28,10 +28,10 @@ export function loginScreen(screenLink,selectedRole,remember=false){
         <div class="login-providers" aria-label="Other sign-in methods">${providers.map(([name,mark])=>`<button type="button" data-provider="${name}" class="login-provider ${name.toLowerCase()}" aria-label="Continue with ${name}">${mark}</button>`).join('')}</div>
         <p class="login-provider-feedback" data-provider-feedback role="status" aria-live="polite"></p>
         <p class="login-create-account">Don't have an account? <a href="${link(7)}">Create an account</a></p>
-        <p class="login-demo-note" id="login-demo-note">Demo only — use sample details. No real sign-in or messages; passwords are not saved.</p>
+        <p class="login-demo-note" id="login-demo-note">Sign in to your local Melo Space account. Email delivery and social sign-in are not connected.</p>
       </section>
     </main>
-    <dialog class="login-recovery" aria-labelledby="login-recovery-title"><h2 id="login-recovery-title">Forgot your password?</h2><p>Password recovery uses the Melo Space account service. It is not connected in this local preview, so no reset message can be sent.</p><p>To explore the demo, use a sample email or mobile number and any sample password with six or more characters.</p><button type="button" data-close-recovery>Back to login</button></dialog>
+    <dialog class="login-recovery" aria-labelledby="login-recovery-title"><h2 id="login-recovery-title">Forgot your password?</h2><p>Password recovery uses the Melo Space account service. It is not connected in this local preview, so no reset message can be sent.</p><p>Use the email and password you registered with with six or more characters.</p><button type="button" data-close-recovery>Back to login</button></dialog>
     <div class="login-bottom-curve" aria-hidden="true"></div>
   </div>`;
 }

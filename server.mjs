@@ -1,5 +1,8 @@
+import {createBackend} from './backend/api.mjs';
+import {fileURLToPath} from 'node:url';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
+const backend=createBackend({databasePath:process.env.MELO_DATABASE||fileURLToPath(new URL('.local/melo.sqlite',import.meta.url)),adminEmail:process.env.MELO_ADMIN_EMAIL,adminPassword:process.env.MELO_ADMIN_PASSWORD,secureCookies:process.env.MELO_SECURE_COOKIES==='1'});
 const port = Number(process.env.PORT || 3000);
 const assets = new Map([['/app.js', ['app.js', 'text/javascript']], ['/styles.css', ['styles.css', 'text/css']], ['/tokens.css', ['tokens.css', 'text/css']]]);
 assets.set('/tura-theme.css', ['tura-theme.css', 'text/css']);
@@ -25,6 +28,7 @@ for (const name of ['workshop','craft','dress','celebration','room','photo','mee
   assets.set('/assets/melo/'+name+'-hd.png', ['assets/melo/'+name+'-hd.png', 'image/png']);
 }
 http.createServer(async (req, res) => {
+  if(await backend.handle(req,res))return;
   const path = new URL(req.url, 'http://localhost').pathname;
   const asset = assets.get(path);
   if (!asset && path !== '/' && !/^\/(customer|admin|staff)(\/.*)?$/.test(path)) { res.writeHead(404); return res.end('Not found'); }
