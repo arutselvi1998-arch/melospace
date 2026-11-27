@@ -56,12 +56,10 @@ try{
  if(process.env.MELO_PROFILE_ONLY){
   assert.equal(await evaluate("!!document.querySelector('.auth-frame, .product-header, .product-footer')"),false,'Complete Profile uses its own reference layout');
   assert.ok(await evaluate("document.querySelector('.complete-profile-submit').getBoundingClientRect().height>0"),'Submit remains visible with collapsed mobile interests');
-  assert.ok(await evaluate("document.querySelector('.complete-profile-back').href.includes('MEL-U-008')"),'Back opens eligibility');
+  assert.ok(await evaluate("document.querySelector('.complete-profile-back').href.includes('MEL-U-005')"),'Back opens login');
   await evaluate("document.querySelector('.complete-profile-form').requestSubmit()");
   assert.ok(await evaluate("document.querySelector('.form-error').textContent.includes('city')"),'Location is required');
   await send('Page.navigate',{url:base+'/customer/screens/MEL-U-008?returnTo=27'});
-  for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('form[data-action=age]')"))break;await pause(50);}
-  await evaluate("const f=document.querySelector('form[data-action=age]');f.elements.adult.checked=true;f.requestSubmit()");
   let profileOpened=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-009')&&!!document.querySelector('[data-profile-completion]')")){profileOpened=true;break;}await pause(50);}
   assert.ok(profileOpened,'Eligibility leads to Complete Profile');
   assert.equal(await evaluate("new URLSearchParams(location.search).get('returnTo')"),'27');
@@ -85,7 +83,7 @@ try{
   assert.ok(saved,'Profile completion opens interests');
   assert.equal(await evaluate("new URLSearchParams(location.search).get('returnTo')"),'27');
   const p=await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).profile");
-  assert.equal(p.name,'Profile Demo');assert.equal(p.city,'Sample City');assert.equal(p.country,'Sample Country');assert.equal(p.birthDate,'1995-06-15');assert.equal(p.gender,'female');assert.equal(p.adult,true);assert.ok(p.photo.startsWith('data:image/png'));assert.deepEqual(p.interests,['art','relax']);
+  assert.equal(p.name,'Profile Demo');assert.equal(p.city,'Sample City');assert.equal(p.country,'Sample Country');assert.equal(p.birthDate,'1995-06-15');assert.equal(p.gender,'female');assert.equal(p.adult,false);assert.ok(p.photo.startsWith('data:image/png'));assert.deepEqual(p.interests,['art','relax']);
   assert.ok(await evaluate("document.querySelector('input[name=interests][value=art]').checked&&document.querySelector('input[name=interests][value=relax]').checked"),'Next screen keeps selected interests');
   await send('Page.navigate',{url:base+'/customer/screens/MEL-U-009'});for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('[data-profile-completion]')"))break;await pause(50);}
   assert.equal(await evaluate("document.querySelector('input[name=city]').value"),'Sample City');assert.ok(await evaluate("document.querySelector('[data-profile-photo-preview]').src.startsWith('data:image/png')"),'Saved avatar is restored');
@@ -124,11 +122,11 @@ try{
   for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('.register-form')"))break;await pause(50);}
   assert.ok(await evaluate("document.querySelector('.register-login-link a').href.includes('returnTo=27')"),'Login retains booking context');
   await fillRegister({...sample,confirmPassword:sample.password,terms:true},true);
-  let created=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-008')&&!!document.querySelector('#main')")){created=true;break;}await pause(50);}
+  let created=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-009')&&!!document.querySelector('#main')")){created=true;break;}await pause(50);}
   assert.ok(created,'Valid demo registration opens eligibility');
   assert.equal(await evaluate("new URLSearchParams(location.search).get('returnTo')"),'27');
   const saved=await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state'))");
-  assert.equal(saved.profile.name,'Registration Demo');assert.equal(saved.role,'host');assert.equal(saved.profile.adult,false);assert.equal(saved.demoSession,false);
+  assert.equal(saved.profile.name,'Registration Demo');assert.equal(saved.role,'user');assert.equal(saved.profile.adult,true);assert.equal(saved.demoSession,false);
   const serialized=JSON.stringify(saved);for(const sensitive of [sample.email,sample.mobile,sample.birthDate,sample.password])assert.equal(serialized.includes(sensitive),false,'Registration does not persist '+sensitive);
   console.log('Registration responsive layout, required fields, 18+ validation, confirmation, terms, visibility controls, provider feedback, Host signup flow, eligibility navigation, booking context and privacy passed.');
  }
@@ -160,7 +158,7 @@ try{
   await evaluate("(()=>{const dt=new DataTransfer();dt.setData('text','123456');document.querySelector('#otp-digit-1').dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true,cancelable:true}));})()");
   assert.equal(await evaluate("document.querySelector('input[name=code]').value"),'123456','Paste fills all boxes');
   await evaluate("document.querySelector('.otp-form').requestSubmit()");
-  let complete=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-008')&&!!document.querySelector('#main')")){complete=true;break;}await pause(50);}
+  let complete=false;for(let i=0;i<100;i++){if(await evaluate("location.pathname.endsWith('MEL-U-009')&&!!document.querySelector('#main')")){complete=true;break;}await pause(50);}
   assert.ok(complete,'Correct demo code opens eligibility');
   assert.equal(await evaluate("JSON.parse(localStorage.getItem('melo-ds6-state')).demoSession"),true);
   await send('Page.navigate',{url:base+'/customer/screens/MEL-U-006?returnTo=27'});

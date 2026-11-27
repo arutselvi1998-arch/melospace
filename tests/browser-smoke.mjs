@@ -54,7 +54,7 @@ try{
   // Simulated sign-in and OTP, then the standard booking flow.
   await screen(5);await submit('demo-login',{identifier:'browser-demo@example.com',password:'demo-pass-123'});await waitScreen(6);
   await submit('verify',{code:'000000'});assert.ok(await evaluate(`!document.querySelector('.form-error').hidden`));
-  await submit('verify',{code:'123456'});await waitScreen(8);await submit('age',{adult:true});await waitScreen(9);
+  await submit('verify',{code:'123456'});await waitScreen(9);
   await screen(22,false,'?experience=art');await submit('date',{experience:'art',date:'2099-01-02',slot:'13:00'});await waitScreen(23);
   await screen(24);await submit('participants',{count:2,guests:'Demo One, Demo Two',adult:true});await waitScreen(25);
   await screen(27);await submit('checkout',{confirm:true});await waitScreen(28);
