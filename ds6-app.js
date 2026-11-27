@@ -38,7 +38,7 @@ const badge=text=>`<span class="badge">${esc(text)}</span>`;
 const input=(label,name,value='',type='text',extra='')=>`<label for="${name}">${label}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" ${extra}>`;
 const area=(label,name,value='',extra='')=>`<label for="${name}">${label}</label><textarea id="${name}" name="${name}" rows="3" ${extra}>${esc(value)}</textarea>`;
 const select=(label,name,options,value)=>`<label for="${name}">${label}</label><select id="${name}" name="${name}">${options.map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${String(v)===String(value)?'selected':''}>${esc(t)}</option>`}).join('')}</select>`;
-const check=(label,name,checked=false,value='on')=>`<label class="check"><input type="checkbox" name="${name}" value="${esc(value)}" ${checked?'checked':''}>${label}</label>`;
+const check=(label,name,checked=false,value='on')=>`<label class="check"><input type="checkbox" name="${name}" value="${esc(value)}" ${checked?'checked':''}><span>${label}</span></label>`;
 const form=(action,body,label='Save changes')=>`<form data-action="${action}"><div class="form-error" role="alert" tabindex="-1" hidden></div>${body}<div class="form-actions"><button type="submit">${label}</button></div></form>`;
 const empty=(title,description,action='')=>`<div class="empty"><h2>${title}</h2><p class="muted">${description}</p>${action}</div>`;
 const pageHead=(title,subtitle='',action='')=>`<div class="page-heading"><div><div class="eyebrow">${admin?'Meetura admin / Melo Space':'Meetura / Melo Space · 18+'}</div><h1>${title}</h1>${subtitle?`<p class="muted">${subtitle}</p>`:''}</div>${action}</div>`;
