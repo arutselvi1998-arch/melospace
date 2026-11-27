@@ -1,7 +1,7 @@
 import {logo,icon} from './ds6-design.js';
 
 export function onboardingScreen(screenLink){
-  const next=screenLink(4,{},false);
+  const next=screenLink(5,{},false);
   const slides=[
     {title:'Discover Experiences',description:'Explore creative workshops and activities made for your interests. Find something new to love.',image:'onboarding-discover.png',alt:'An adult woman enjoying a painting workshop with friends',icon:'sparkles'},
     {title:'Book Private Rooms',description:'Choose unique rooms, decoration themes, and little extras for your special moments.',image:'celebration-hd.png',alt:'A pink celebration setup with cake, flowers, and warm lights',icon:'room'},

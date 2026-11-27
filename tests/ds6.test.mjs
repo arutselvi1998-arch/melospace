@@ -54,14 +54,15 @@ test('registration accepts exactly 18, rejects younger or invalid birth dates, a
   assert.ok(registrationErrors({...data,birthDate:'2006-03-01'},'2024-02-29').some(e=>e.includes('18')));
 });
 test('registration validates contact fields, sample password confirmation, consent and role',()=>{
-  const data={name:'Sample Host',email:'sample@example.com',mobile:'+12025550147',birthDate:'1995-06-15',password:'Sample987!',confirmPassword:'Sample987!',terms:true,role:'host'};
+  const data={name:'Sample User',email:'sample@example.com',mobile:'+12025550147',birthDate:'1995-06-15',password:'Sample987!',confirmPassword:'Sample987!',terms:true,role:'user'};
   assert.deepEqual(registrationErrors(data,'2026-11-21'),[]);
   assert.ok(registrationErrors({...data,email:'invalid'},'2026-11-21').some(e=>e.includes('email')));
   assert.ok(registrationErrors({...data,mobile:'abc123'},'2026-11-21').some(e=>e.includes('mobile')));
   assert.ok(registrationErrors({...data,password:'123',confirmPassword:'123'},'2026-11-21').some(e=>e.includes('six')));
   assert.ok(registrationErrors({...data,confirmPassword:'Different'},'2026-11-21').some(e=>e.includes('do not match')));
   assert.ok(registrationErrors({...data,terms:false},'2026-11-21').some(e=>e.includes('Accept')));
-  assert.ok(registrationErrors({...data,role:'admin'},'2026-11-21').some(e=>e.includes('User or Host')));
+  assert.ok(registrationErrors({...data,role:'host'},'2026-11-21').some(e=>e.includes('Only user accounts')));
+  assert.ok(registrationErrors({...data,role:'admin'},'2026-11-21').some(e=>e.includes('Only user accounts')));
 });
 
 test('profile completion validates required identity/location and any supplied adult birth date',()=>{

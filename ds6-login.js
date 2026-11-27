@@ -6,18 +6,18 @@ const providers=[['Google','<span class="login-google-mark" aria-hidden="true">G
 export {providers as accountProviders};
 
 export function loginScreen(screenLink,selectedRole,remember=false){
-  const role=selectedRole==='host'?'host':'user';
+  const role='user';
   const returnTo=new URLSearchParams(location.search).get('returnTo');
   const link=n=>screenLink(n,n===5&&returnTo?{returnTo}:{},false);
   return `<div class="melo-login" data-login-screen>
-    <a class="login-back" href="${link(4)}" aria-label="Back to role selection"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></a>
+    <a class="login-back" href="${link(3)}" aria-label="Back to onboarding"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></a>
     <div class="login-mobile-welcome">${logo(true)}<h1>Welcome Back!</h1><p>Sign in to unlock your world.<br>Experiences, moments and more.</p></div>
     <main id="main" class="login-layout">
       <section class="login-illustration" aria-label="Melo Space experiences"><div class="login-room-scene"><img src="/assets/melo/room-hd.png" alt="A pink celebration studio with fairy lights and a glowing heart" fetchpriority="high"></div><div class="login-illustration-copy">${logo(true)}<p>Experience · Celebrate · Create</p><div class="login-brand-features">${[['calendar','Book','experiences'],['room','Private','rooms'],['sparkles','Themes','& decor']].map(([i,t,s])=>`<span>${icon(i)}<span>${t}<br>${s}</span></span>`).join('')}</div></div><span class="login-decoration" aria-hidden="true">✦</span></section>
       <section class="login-card" aria-label="Login or sign up">
         <div class="login-heading"><h1>Welcome to<br><span>Melo Space<sup>+</sup></span></h1><p>Sign in to create your next moment.</p></div>
         <nav class="login-access-tabs" aria-label="Account access"><a class="is-current" href="${link(5)}" aria-current="page">Login</a><a href="${link(7)}">Sign Up</a></nav>
-        <div class="login-role-context"><span>${role==='host'?'Host':'User'} account</span><a href="${link(4)}">Change role</a></div>
+        <div class="login-role-context"><span>User account</span></div>
         <form data-action="demo-login" class="login-form" autocomplete="off"><div class="form-error" role="alert" tabindex="-1" hidden></div><input type="hidden" name="role" value="${role}">
           <label for="login-identifier">Email or mobile number</label><div class="login-input-wrap">${icon('user')}<input id="login-identifier" name="identifier" type="text" required maxlength="120" placeholder="demo@example.com" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
           <label for="login-password">Password</label><div class="login-input-wrap login-password-wrap">${icon('lock')}<input id="login-password" name="password" type="password" required minlength="6" maxlength="120" placeholder="Sample password (6+ characters)" autocomplete="off" aria-describedby="login-demo-note"><button type="button" class="login-password-toggle" data-password-toggle aria-label="Show password" aria-pressed="false">${eye}</button></div>

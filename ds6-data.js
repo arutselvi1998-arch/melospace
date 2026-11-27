@@ -1,5 +1,5 @@
 export const userGroups = [
-  ['Authentication & Onboarding',1,['Splash Screen','Welcome / Get Started','Onboarding','Role Selection — User / Host','Login / Sign Up','OTP Verification','Create Account','Age Eligibility — 18+','Complete Profile','Select Interests']],
+  ['Authentication & Onboarding',1,['Splash Screen','Welcome / Get Started','Onboarding','User Account','Login / Sign Up','OTP Verification','Create Account','Age Eligibility — 18+','Complete Profile','Select Interests']],
   ['Home & Experience Discovery',11,['Home Dashboard','Explore Experiences','Experience Categories','Category Details','Search Results','Experience Details','Experience Gallery','Host / Facilitator Profile','Venue Details','Wishlist','Recently Viewed']],
   ['Experience Booking',22,['Availability Calendar','Session Details','Select Participants','Booking Summary','Offers & Coupons','Checkout & Payment','Booking Confirmation','My Bookings','Booking Details','Digital Entry Pass / QR','Reschedule Booking','Cancel Booking','Refund Status']],
   ['Private Rooms, Decor & Dresses',35,['Private Rooms Landing','Private Room Categories','Room / Package Details','Select Room & Size','Select Decoration Theme','Select Decoration Items','Dress & Costume Catalogue','Dress Details & Size Selection','Accessories & Add-ons','Private Room Date & Time','Private Room Booking Summary','Private Room Booking Confirmation']],
@@ -57,7 +57,7 @@ export function registrationErrors(data,reference=today()){
   if(String(data.password||'').trim().length<6)errors.push('Use a sample password with at least six characters.');
   if(data.password!==data.confirmPassword)errors.push('The sample passwords do not match.');
   if(!data.terms)errors.push('Accept the Terms & Conditions and Privacy Policy to continue in this demo.');
-  if(!['user','host'].includes(data.role))errors.push('Choose User or Host before creating a demo profile.');
+  if(data.role!=='user')errors.push('Only user accounts can be created here.');
   return errors;
 }
 export function profileCompletionErrors(data,categories,reference=today()){
