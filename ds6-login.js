@@ -31,7 +31,7 @@ export function loginScreen(screenLink,selectedRole,remember=false){
         <p class="login-demo-note" id="login-demo-note">Demo only — use sample details. No real sign-in or messages; passwords are not saved.</p>
       </section>
     </main>
-    <dialog class="login-recovery" aria-labelledby="login-recovery-title"><h2 id="login-recovery-title">Forgot your password?</h2><p>Password recovery is managed by the shared Meetura account service. It is not connected in this local preview, so no reset message can be sent.</p><p>To explore the demo, use a sample email or mobile number and any sample password with six or more characters.</p><button type="button" data-close-recovery>Back to login</button></dialog>
+    <dialog class="login-recovery" aria-labelledby="login-recovery-title"><h2 id="login-recovery-title">Forgot your password?</h2><p>Password recovery uses the Melo Space account service. It is not connected in this local preview, so no reset message can be sent.</p><p>To explore the demo, use a sample email or mobile number and any sample password with six or more characters.</p><button type="button" data-close-recovery>Back to login</button></dialog>
     <div class="login-bottom-curve" aria-hidden="true"></div>
   </div>`;
 }
