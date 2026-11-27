@@ -96,3 +96,15 @@ test('interests allow zero through six distinct active categories and reject inv
   assert.ok(interestSelectionErrors(['art'],state.categories).some(e=>e.includes('available')));
   assert.ok(interestSelectionErrors(null,state.categories).length);
 });
+import {saveCustomerRecord} from '../ds6-data.js';
+test('customer records update by identity and exclude passwords and OTPs',()=>{
+  const state=initialState();
+  const first=saveCustomerRecord(state,{name:'First Customer',email:'FIRST@example.com',mobile:'1234567890',password:'never-save',code:'123456'});
+  const same=saveCustomerRecord(state,{name:'Updated Customer',email:'first@example.com'});
+  assert.equal(first.id,same.id);assert.equal(state.customers.length,1);
+  saveCustomerRecord(state,{city:'Chennai',interests:['art']},first.id);
+  assert.equal(first.email,'first@example.com');assert.equal(first.city,'Chennai');
+  assert.deepEqual(first.interests,['art']);assert.equal(first.password,undefined);assert.equal(first.code,undefined);
+  saveCustomerRecord(state,{name:'Second Customer',email:'second@example.com'});
+  assert.equal(state.customers.length,2);assert.ok(first.createdAt);assert.ok(first.updatedAt);
+});

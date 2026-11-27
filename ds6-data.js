@@ -38,7 +38,7 @@ export const themes=['Soft celebration','Floral daydream','Starlit evening'];
 export const dresses=[{id:'linen',name:'Linen celebration set',price:400},{id:'evening',name:'Evening dress',price:600},{id:'classic',name:'Classic costume',price:500}];
 export const communities=[{id:'makers',name:'The Makers Circle',description:'Art, experiments, and happy little accidents.'},{id:'readers',name:'Slow Sunday Readers',description:'A quieter kind of together.'},{id:'stage',name:'Open Stage Collective',description:'A welcoming space to find your voice.'}];
 export const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
-export function initialState(){return {version:6,categories:structuredClone(seeds),profile:{name:'Demo Guest',bio:'',interests:[],adult:false},role:'user',demoSession:false,adminSession:false,wishlist:[],recent:[],bookings:[],communities:[],messages:[],reviews:[],tickets:[],preferences:{email:true,push:true,quiet:false},draft:{experience:'art',count:1,date:'',slot:'10:00',guests:'Demo Guest',room:'studio',theme:themes[0],decor:[],dress:'',size:'M',accessories:[],note:''}};}
+export function initialState(){return {version:6,categories:structuredClone(seeds),profile:{name:'Demo Guest',bio:'',interests:[],adult:false},role:'user',demoSession:false,adminSession:false,wishlist:[],recent:[],bookings:[],customers:[],communities:[],messages:[],reviews:[],tickets:[],preferences:{email:true,push:true,quiet:false},draft:{experience:'art',count:1,date:'',slot:'10:00',guests:'Demo Guest',room:'studio',theme:themes[0],decor:[],dress:'',size:'M',accessories:[],note:''}};}
 export function bookingTotal(draft){const e=experiences.find(e=>e.id===draft.experience)||experiences[0];if(e.id!=='dream')return e.price*Number(draft.count);const room=rooms.find(r=>r.id===draft.room)||rooms[0];const dress=dresses.find(d=>d.id===draft.dress);return room.price+(draft.decor||[]).length*150+(draft.accessories||[]).length*100+(dress?.price||0);}
 export function categoryErrors(input,categories,editingId){const errors=[];if(!input.name?.trim())errors.push('Enter a category name.');if(input.name?.trim().length>80)errors.push('Category names must be 80 characters or fewer.');if(categories.some(c=>c.id!==editingId&&c.name.toLowerCase()===input.name?.trim().toLowerCase()))errors.push('A category with this name already exists.');if(!input.description?.trim())errors.push('Enter a category description.');if(input.image){try{if(!['http:','https:'].includes(new URL(input.image).protocol))errors.push('Use an http or https image URL.');}catch{errors.push('Enter a valid image URL.');}}return errors;}
 export function listValues(value){return [...new Set(String(value).split(',').map(s=>s.trim()).filter(Boolean))];}
@@ -73,3 +73,15 @@ export function profileCompletionErrors(data,categories,reference=today()){
 }
 export function interestSelectionErrors(ids,categories){const errors=[];if(!Array.isArray(ids))return ['Choose interests from the available categories.'];if(new Set(ids).size>6)errors.push('Choose up to six interests to continue.');if(ids.some(id=>!categories.some(c=>c.id===id&&c.active)))errors.push('Choose interests from the available categories.');return errors;}
 export function makeBooking(draft,state,id){const errors=bookingErrors(draft,state);if(errors.length)throw new Error(errors.join(' '));const e=experiences.find(e=>e.id===draft.experience);return {id,title:e.title,...structuredClone(draft),total:bookingTotal(draft),status:'Demo reserved',payment:'Not charged',checkedIn:false,createdAt:new Date().toISOString()};}
+
+export function saveCustomerRecord(state,details,id){
+  state.customers ||= [];
+  const email=String(details.email||'').trim().toLowerCase();
+  const existing=state.customers.find(c=>id?c.id===id:email&&c.email===email);
+  const now=new Date().toISOString();
+  const record=existing||{id:'CUS-'+crypto.randomUUID(),createdAt:now};
+  for(const key of ['name','email','mobile','birthDate','gender','city','country','bio','interests'])if(details[key]!==undefined)record[key]=key==='email'?email:key==='interests'?[...details[key]]:String(details[key]);
+  record.updatedAt=now;
+  if(!existing)state.customers.push(record);
+  return record;
+}
